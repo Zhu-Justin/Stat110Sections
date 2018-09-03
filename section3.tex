@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage{stat110}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\title{Random Variables and their Distributions}
+\sectionnum{3}
+
+\author{\shira, \tim}
+
+%\SOLUTION
+
+\begin{document}
+
+\maketitle
+
+\begin{notes}
+
+\section*{Useful Formulas from Last Week}
+\begin{description}
+	\item[Conditional Probability] - $P({\bf A}|{\bf B})$ - Probability of ${\bf A}$ given ${\bf B}$ occurred.
+	$$ P({\bf A | B}) = \frac{P({\bf A \cap B})}{P({\bf B})}$$
+	\item[Bayes' Rule] - Bayes' Rule unites marginal, joint, and conditional probabilities.
+	\[P({\bf A}|{\bf B}) = \frac{P({\bf B}|{\bf A})P({\bf A})}{P({\bf B})}\]
+
+	\item[Law of Total Probability] - conditioning on $A$'s
+   \begin{align*} 
+P({\bf B}) &= P({\bf B} | {\bf A}_1)P({\bf A}_1) + P({\bf B} | {\bf A}_2)P({\bf A}_2) + \ldots  P({\bf B} | {\bf A}_n)P({\bf A}_n)\\
+P({\bf B}) &= P({\bf B} | {\bf A})P({\bf A}) + P({\bf B} | {\bf A^c})P({\bf A^c}) \\
+   \end{align*} 
+\end{description}
+\section*{Famous Applications of Conditional Probability}
+\subsection*{Monty Hall}
+If we knew the location of the car, we could determine whether or not switching doors would be beneficial. This motivates us to condition on which door the car is behind. Without loss of generality, suppose we chose door 1. Let $C_1, C_2, C_3$ be the events that the car is behind the first, second and third doors respectively. Let $W$ be the event that we win and receive the car. We will analyze the two situations. In both cases, we will use LOTP in the following way: 
+\begin{align*}
+P(W) &= P(W | C_1) P(C_1) + P(W | C_2) P(C_2) + P(W | C_3 ) P(C_3) \\ 
+&= P(W | C_1) \cdot \frac{1}{3} + P(W | C_2) \cdot \frac{1}{3} + P(W | C_3) \cdot \frac{1}{3}
+\end{align*} 
+\begin{itemize}
+\item \textbf{Strategy = Switch}\\
+We have that $P(W | C_1) = 0$ because if our initial guess was correct and we always switch, then we always lose. In the other 2 cases, $P(W | C_1) = P(W | C_2) = 1$ because we have chosen one of the goats, another is revealed, so by switching we are guaranteed the car. Therefore: 
+$$P(W) = 0 \cdot \frac{1}{3} +  1 \cdot \frac{1}{3} +  1 \cdot \frac{1}{3} = \boxed{\frac{2}{3}}$$
+\item \textbf{Strategy = Stay}\\
+Here, we will only win if we picked the right door to begin with, so: 
+
+$$P(W) = 1 \cdot \frac{1}{3} +  0 \cdot \frac{1}{3} +  0 \cdot \frac{1}{3} = \boxed{\frac{1}{3}}$$
+\end{itemize}
+
+\subsection*{Gambler's Ruin}
+This problem is an example of \textit{first step analysis}, where we use the Law of Total Probability, conditioned on what could happen at the first step, and look for a recursive way to express the probability of success given the first step. 
+
+In the Gambler's Ruin problem, we let $p_i$ denote the probability of winning when you have $i$ dollars, while your opponent has $N-i$ dollars. Using first step analysis allows us to write an equation relating the $p_i$'s. Let $W$ be the event that you win. 
+\begin{align*}
+p_i &= P(W | \text{starting with \$$i$, you win round 1}) \cdot p + P(W | \text{starting with \$$i$, you lose round 1}) \cdot q \\ 
+&= P(W | \text{you have \$$i+1$}) \cdot p + P(W | \text{you have \$ $i-1$}) \cdot q \\ 
+&= p_{i+1} \cdot p + p_{i-1} \cdot q
+\end{align*}
+We also have the edge case conditions that $p_0 = 0$ and $p_N = 1$. The above is called a \textit{difference equation}, and the closed form solution for $p_i$ is given as follows: 
+
+\[ p_i =
+\begin{cases} 
+      \frac{1 - \pfrac{q}{p}^i}{1 - \pfrac{q}{p}^N} & p \neq q \\
+      \frac{i}{N} & p = q = \frac{1}{2}
+\end{cases}
+\]
+
+\subsection*{Simpson's Paradox}
+\textbf{Simpson's Paradox} says that X can be less successful than Y when compared within every group (Surgery Types, etc.), but still X can be more successful than Y when compared in the aggregate. This result is caused by a lurking variable, the groups, who 1) have a large impact on the success rate and 2) whose relative sizes are very different between X and Y. In statistical language, you can have that:
+\begin{align*}
+	P(A|B, C) < P(A|B^c, C) \hskip 1cm \textnormal{and}  \hskip 1cm P(A|B, C^c) < P(A|B^c, C^c)  \hskip 1cm \textnormal{but} \hskip 1cm P(A|B) > P(A|B^c)
+\end{align*}
+where A is success, B is one of the things that you are comparing (e.g. Doctors), and C is one of the groups (e.g. Surgery Types). \\
+Here's an example:
+\begin{center}
+\begin{tabular}{c|c|c}
+                    & Doctor A & Doctor B \\
+ \hline
+ Applying band-aid & $\slfrac{81}{87} \paren{93\%}$ & $\slfrac{234}{270} \paren{87\%}$ \\
+ \hline
+ Open-heart surgery & $\slfrac{192}{263} \paren{73\%}$ & $\slfrac{55}{80} \paren{69\%}$ \\
+ \hline
+ Both               & $\slfrac{273}{350} \paren{78\%}$ & $\slfrac{289}{350} \paren{83\%}$ \\
+\end{tabular}
+\end{center}
+
+\section*{Random Variables}
+\begin{description}
+	\item[Formal Definition] - A random variable X is a \emph{function} mapping the sample space $S$ into the real line.
+	\item[Descriptive Definition] - A random variable takes on a numerical summary of an experiment. The randomness comes from the randomness of what outcome occurs. Each outcome has a certain probability. A discrete random variable may only take on a finite (or countably infinite) number of values. Random variables are often denoted by capital letters, usually $X$ and $Y$.
+\end{description}
+
+\section*{Distributions}
+A distribution describes the probability that a random variable takes on certain values. Some distributions are commonly used in statistics because they can help model real life phenomena.
+
+\section*{PMF, CDF, and Independence}
+\begin{description}
+
+\item[Probability Mass Function (PMF)] (Discrete Only) gives the probability that a random variable takes on the value X.
+\begin{center}
+$P_X(x) = P(X=x)$
+\end{center}
+
+\item[Cumulative Distribution Function (CDF)] gives the probability that a random variable takes on the value x or less
+\[F_X(x_0) = P(X \leq x_0)\]
+
+\item[Independence] - Intuitively, two random variables are independent if knowing one gives you no information about the other. X and Y are independent if for ALL values of x and y:  
+\begin{center}
+$P(X=x, Y=y) = P(X = x)P(Y = y)$
+\end{center}
+\end{description}
+
+\section*{Bernoulli Distribution}
+\begin{description}
+    \item[Bernoulli] The Bernoulli distribution is the simplest case of the Binomial distribution, where we only have one trial, or $n=1$. Let us say that X is distributed \Bern($p$). We know the following:
+	\item[Story.] $X$ ``succeeds'' (is 1) with probability $p$, and $X$ ``fails'' (is 0) with probability $1-p$.
+	\item[Example.] A fair coin flip is distributed \Bern($\frac{1}{2}$).
+	\item[PMF.] The probability mass function of a Bernoulli is:
+\[P(X = x) = p^x(1-p)^{1-x}\]
+or simply
+\[P(X = x) = \begin{cases} p, & x = 1 \\ 1-p, & x = 0 \end{cases}\]
+\end{description}
+
+\section*{Binomial Distribution}
+\begin{description}
+    \item[Binomial] Let us say that $X$ is distributed \Bin($n,p$). We know the following:
+	\item[Story] $X$ is the number of ``successes'' that we will achieve in $n$ independent trials, where each trial can be either a success or a failure, each with the same probability $p$ of success.
+	\item[Example] If Jeremy Lin makes 10 free throws and each one independently has a $\frac{3}{4}$ chance of getting in, then the number of free throws he makes is distributed  \Bin($10,\frac{3}{4}$), or, letting X be the number of free throws that he makes, X is a Binomial Random Variable distributed  \Bin($10,\frac{3}{4}$).
+	\item[PMF] The probability mass function of a Binomial is:
+\[P(X = x) = {n  \choose x} p^x(1-p)^{n-x}\]
+\end{description}
+
+\subsection*{Hypergeometric}
+Let us say that $X$ is distributed $\HGeom(w, b, n)$. We know the following:
+\begin{description}
+	\item[Story] In a population of $b$ undesired objects and $w$ desired objects, $X$ is the number of ``successes" we will have in a draw of $n$ objects, without replacement.
+	\item[Example] 1) Let's say that we have only $b$ Weedles (failure) and $w$ Pikachus (success) in Viridian Forest. We encounter $n$ of the Pokemon in the forest, and $X$ is the number of Pikachus in our encounters. 2) The number of aces that you draw in 5 cards (without replacement). 3) You have $w$ white balls and $b$ black balls, and you draw $b$ balls. $X$ is the number of white balls you will draw in your sample. 
+	\item[PMF] The probability mass function of a Hypergeometric is:
+\[P(X = k) = \frac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}\]
+\end{description}
+
+\subsection*{Geometric} Let us say that $X$ is distributed $\Geom(p)$. We know the following:
+\begin{description}
+	\item[Story] $X$ is the number of ``failures" that we will achieve before we achieve our first success. Our successes have probability $p$.
+	\item[Example] If each pokeball we throw has a $\frac{1}{10}$ probability to catch Mew, the number of failed pokeballs will be distributed $\Geom(\frac{1}{10})$.
+	\item[PMF] With $q = 1-p$, the probability mass function of a Geometric is:
+\[P(X = k) = q^kp\]
+\end{description}
+
+\section*{Discrete Distributions}
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{cccccc}
+\textbf{Distribution} & \textbf{PDF and Support} & \textbf{Expected Value}  & \textbf{Equivalent To}\\
+\hline
+\shortstack{Bernoulli \\ \Bern($p$)} & \shortstack{$P(X=1) = p$ \\ $ P(X=0) = q$} & $p$ & $\Bin(1, p)$ \\
+\hline
+\shortstack{Binomial \\ \Bin($n, p$)} & \shortstack{$P(X=k) = {n \choose k}p^k(1-p)^{n-k}$  \\ $k \in \{0, 1, 2, \dots n\}$}& $np$ & Sum of $n$ independent Bern($p$) \\
+\hline
+\shortstack{Geometric \\ \Geom($p$)} & \shortstack{$P(X=k) = q^kp$  \\ $k \in \{$0, 1, 2, \dots $\}$}& $\frac{q}{p}$ &  \\
+\hline
+\shortstack{Hypergeometric \\ \HGeom($w, b, n$)} & \shortstack{$P(X=k) = \slfrac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}$ \\ $k \in \{$0, 1, 2, \dots $\}$} & $n\frac{w}{b+w}$ &  \\
+\end{tabular}
+\end{center}
+
+
+\end{notes}
+
+\newpage
+\section*{Practice Problems}
+\begin{exercise}{Calvin and Hobbes} 
+Calvin and Hobbes play a match consisting of a series of games, where Calvin has probability $p$ of winning each game (independently). They play with a ``win by two'' rule: the first player to win two games more than his opponent wins the match. Find the probability that Calvin wins the match (in terms of $p$) in two different ways: 
+\begin{enumerate}
+\item [(a)] by conditioning, using the Law of Total Probability 
+\item [(b)] by interpreting the problem as a gambler's ruin problem. 
+\end{enumerate}
+\end{exercise}
+\begin{solution}{5}
+\textbf{LOTP Solution: } Let $C$ be the event that Calvin wins the match. Consider the first two games. There are 4 possible outcomes, 3 of which result in Calvin not losing immediately. Therefore, we condition on each of these possibilities: Let $WW$ represent Calvin winning both games, and $WL$, $LW$ represent a win then a loss or a loss then a win respectively. Using LOTP, we get: 
+\begin{align*}
+P(C) &= P(C | WW) P(WW) + P(C | WL) P (WL) + P(C | LW) P(LW) \\ 
+&= p^2 + 2pq \cdot P(C) \\ 
+&\Downarrow \\
+P(C) &= \frac{p^2}{1 - 2pq} \\ 
+&=  \boxed{\frac{p^2}{p^2 + q^2}}
+\end{align*}  
+\textbf{Gambler's Ruin Solution: } We can interpret this problem as a Gambler's Ruin where each player starts out with \$2. Calvin wins if he gets to \$4. Therefore, we have $N = 4$ and $i = 2$, so the probability of Calvin winning is: 
+
+$$ \frac{1 - \pfrac{q}{p}^2}{1 - \pfrac{q}{p}^4} = \frac{p^2(p^2 - q^2)}{p^4 - q^4} =\boxed{ \frac{p^2}{p^2 + q^2}}$$
+which is indeed the same answer as before. 
+\end{solution}
+\newpage
+
+\begin{exercise}{Quick Gambler's Ruin} 
+As in the gambler's ruin problem, two gamblers, $A$ and $B$, make a series of bets, until one of the gamblers goes bankrupt. Let $A$ start out with $i$ dollars and $B$ start out with $N-i$ dollars, and let $p$ be the probability of $A$ winning a bet, with $0 < p < \frac{1}{2}$. Each bet is for $\frac{1}{k}$ dollars, with $k$ a positive integer, e.g., $k=1$ is the original gambler's ruin problem and $k = 20$ means they're betting nickels. What is the probability that $A$ wins the game?
+\end{exercise}
+\begin{solution}{2}
+This problem is isomorphic to the gambler's ruin problem except we simply change the relative bet size from \$1 to \$$\frac{1}{k}$ per bet. So we can take the same approach in the gambler's ruin problem except putting everything in appropriate scale: $A$ begins with $ki$ units of money and $k(N-i)$ units of money. Letting $t = \frac{q}{p}$, we have that 
+    $$P(\text{$A$ wins}) = \frac{1 - t^{ki}}{1-t^{kN}}$$
+\end{solution}
+
+
+\begin{comment}
+Commented out since this is mostly covered in lecture.
+\begin{exercise}{Sum of Independent Binomials}
+Suppose $X \sim \Bin(n_1, p)$ and $Y \sim \Bin(n_2, p)$ are independent. 
+\begin{enumerate}[label=(\alph*)]
+        \item What is the distribution of $X + Y$? Explaining using the story of the binomial distribution. Why is it important to assume that $X$ and $Y$ are independent? 
+        
+        \item Use the PMF's of $X$ and $Y$ to show your result from (a). (Just set up the equation, see solutions file for full calculations) 
+        
+        \item Write out an expression for $P(X+Y = 10)$? Assume that $n_1 + n_2 \ge 10$. What happens when $n_1 + n_2 < 10$? 
+        \item What is one reason why $X - Y$ cannot be Binomial?
+\end{enumerate}
+\end{exercise}
+\begin{solution}{3} Recall that Bin$(n,p)$ represents the number of heads in $n$ independent flips of a coin, each coming up head with probability $p$. 
+\begin{enumerate}[label=(\alph*)]
+\item Intuitively, we can use a story argument to determine the distribution of $X + Y$. Let's say we have a coin that is heads with probability $p$. $X$ is then a random variable that takes on the distribution of the number of heads obtained if we flip the coin $n_1$ times and $Y$ is a random variable that takes on the distribution of the number of heads obtained if we flip the coin $n_2$ times. Note that $X$ and $Y$ are independent of each other. $X + Y$ is thus the random variable that represents the number of heads in $n_1 + n_2$ flips of the coin. Hence, it follows that $X + Y \sim \Bin(n_1 + n_2, p)$. \\
+
+\item 
+We can compute the PMF of $X + Y$ using the Law of Total Probability. \\
+We want $P(X + Y = k)$. Condition on the value of $X$.
+\begin{align*}
+P(X + Y = k) &= \sum_{j = 0}^k P(X + Y = k | X = j)P(X = j) \\
+&= \sum_{j = 0}^k P(Y = k - j| X = j)P(X = j) \\
+&= \sum_{j = 0}^k P(Y = k - j)P(X = j) \; \textrm{(we're using the independence assumption here!)} \\
+&= \sum_{j = 0}^k \binom{n_2}{k - j}p^{k - j}(1 - p)^{n_2 - (k - j)} \binom{n_1}{j}p^j(1 - p)^{n_1 - j} \\
+&= \paren{\sum_{j = 0}^k\binom{n_2}{k - j}\binom{n_1}{j}} p^k(1 - p)^{n_1 + n_2 - k}  \\
+&= \binom{n_1 + n_2}{k} p^k(1 - p)^{n_1 + n_2 - k}
+\end{align*}
+The last step uses Vandermonde's identity. We recognize that this as this $\Bin(n_1 + n_2, p)$ PMF. Compare this to the story proof, which is way better!
+\item Using the result in part a that $X + Y \sim \Bin(n_1 + n_2, p)$, we have that
+\begin{align*}
+P(X + Y = 10) = \binom{n_1 + n_2}{10} p^{10} (1 - p)^{n_1 + n_2 - 10}
+\end{align*} 
+
+If $n_1 + n_2 < 10$, then the answer is 0 because if we're not even flipping coins at least 10 times, then we can't get 10 heads. 
+\item $X - Y$ can go negative, and hence cannot be Binomial as the support of the Binomial distribution are non-negative integers.
+\end{enumerate}
+
+\end{solution}
+\end{comment}
+
+\begin{exercise}{Mixture of Binomials}
+There are two coins, one with probability $p_1$ of Heads and the other with probability $p_2$ of Heads. One of the coins is randomly chosen (with equal probabilities for the two coins). It is then flipped $n \geq 2$ times. Let X be the number of times it lands Heads.
+\begin{enumerate}
+\item 
+Find the PMF of $X$. 
+\item What is the distribution of $X$ if $p_1 = p_2$? 
+
+
+\item Give an intuitive explanation of why $X$ is not Binomial for $p_1 \neq p_2$ (its distribution is called a mixture of two Binomials). You can assume that $n$ is large for your explanation, so that the frequentist interpretation of probability can be applied.
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}{3}
+\vspace{-5mm}
+\begin{enumerate}[label=(\alph*)]
+\item By LOTP, conditioning on which coin is chosen, we have
+$$P(X = k) = \frac{1}{2}\binom{n}{k}p_1^k(1 - p_1)^{n - k} + \frac{1}{2}\binom{n}{k}p_2^k(1 - p_2)^{n - k}$$
+for $k = 0, 1, \ldots, n$.
+
+\item For $p_1 = p_2$, the above expression reduces to the $\Bin(n, p_1)$ PMF.
+
+\item A mixture of two Binomials is not Binomial (except in the degenerate case $p_1 = p_2$). Marginally, each toss has probability $\frac{p_1 + p_2}{2}$ of landing Heads, but the tosses are not independent since earlier tosses give information about which coin was chosen, which in turn gives information about later tosses. \\
+Let $n$ be large, and imagine repeating the entire experiment many times (each repetition consists of choosing a random coin and flipping it n times). We would expect to see either approximately $n p_1$ Heads about half the time, and approximately $n p_2$ Heads about half the time. In contrast, with a $\Bin(n, p)$ distribution we would expect to see approximately $n p$ Heads; no fixed choice of $p$ can create the behavior described above.
+\end{enumerate}
+
+\end{solution}
+
+
+\begin{exercise}{Symmetry} For the following 2 exercises, think about how symmetry may be used to avoid unnecessary calculations. 
+\begin{enumerate}[label=(\alph*)]
+        \item Suppose $X$ and $Y$ are i.i.d. $\Bin(n, p)$. What is $P(X < Y)$?
+        \item Can you construct two random variables X and Y both distributed \Bin($3, \frac{1}{2}$) such that $P(X=Y)=0$?
+\end{enumerate}
+\end{exercise}
+\begin{solution}{3}
+\vspace{-5mm}
+\begin{enumerate}[label=(\alph*)]
+\item
+First, we note that $P(X < Y) = P(Y < X)$ by symmetry, and that $P(X < Y) + P(X = Y) + P(Y < X) = 1$. Hence,
+\begin{align*}
+P(X < Y) &= \frac{1}{2}\paren{1 - P(X = Y)} \\
+&= \frac{1}{2}\paren{1 - \sum_{k=0}^n P(X = Y | X = k)P(X = k)} \\
+&= \frac{1}{2}\paren{1 - \sum_{k=0}^n P(Y = k)P(X = k)} \\
+&= \frac{1}{2}\paren{1 - \sum_{k=0}^n\paren{\binom{n}{k}p^k(1 - p)^{n - k}}^2}
+\end{align*}
+\item
+Yes, let $Y = 3 - X$. Then, there is no way that $X$ and $Y$ take on the same value because their sum would have to be 3. 
+\end{enumerate}
+\end{solution}
+
+\begin{exercise}{Counting Cards}
+In the game Texas Hold'em, players combine two of their cards that are hidden to everyone else with five community cards to make the best possible five-card hand. The game is played with a standard deck of 52 cards. A flush is where all 5 cards belong to the same suit. \\
+
+Suppose you are holding 2 spades in your hand, and there are 2 spades showing among the three community cards. What is the probability that you hit the flush? 
+\end{exercise}
+
+\begin{solution}{2}
+Since we currently see 4 spades, there are 9 other spades that can be used. Of the 52 cards in the deck, we know what 5 of them are, so we have 47 card values that remain to be seen. To find this probability, we can use the Hyper-Geometric distribution, specifically of HGeom($9, 38, 2$), since there are 9 desirable cards, 38 undesirable cards, and 2 cards that are being drawn. Now, we are interested in the probability that we observe either one or two spades in the two cards we draw. Or $P(X = 1) + P(X=2)$, where $X$ is distributed as above. 
+    $$\frac{{9 \choose 1}{38 \choose 1}}{{47 \choose 2}} + \frac{{9 \choose 2}}{{47 \choose 2}}$$
+\end{solution}
+
+\begin{exercise}{Conditional Binomial}
+Suppose $X \sim \Bin(n_1, p)$ and $Y \sim \Bin(n_2, p)$ are independent. What is the conditional distribution of $X$ given that $X + Y = k$, where $k \in \{0, 1, \ldots, n_1 + n_2\}$?
+\end{exercise}
+
+\begin{solution}{3}
+We can use Bayes' Theorem to find the PMF of $X | X + Y = k$.
+\begin{align*}
+P(X = j | X + Y = k) &= \frac{P(X + Y = k | X = j)P(X = j)}{P(X + Y = k)} \\
+&= \frac{P(Y = k - j)P(X = j)}{P(X + Y = k)} \\
+&= \frac{\binom{n_2}{k - j}p^{k - j}(1 - p)^{n_2 - (k - j)}\binom{n_1}{j}p^j(1 - p)^{n_1 - j}}{\binom{n_1 + n_2}{k}p^k(1 - p)^{n_1 + n_2 - k}} \\
+&= \frac{\binom{n_2}{k - j}\binom{n_1}{j}p^k(1 - p)^{n_1 + n_2 - k}}{\binom{n_1 + n_2}{k}p^k(1 - p)^{n_1 + n_2 - k}} \\
+&= \frac{\binom{n_2}{k - j}\binom{n_1}{j}}{\binom{n_1 + n_2}{k}}
+\end{align*}
+This is the PMF of the Hypergeometric distribution with parameters $n_1$, $n_2$, $k$, which we'll learn more about in next week's lectures.
+\end{solution}
+
+\end{document}

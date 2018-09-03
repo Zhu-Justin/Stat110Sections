@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+\usepackage{stat110}
+\usepackage{textcomp}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\title{Conditional Probability}
+\sectionnum{2}
+
+\author{\justin}
+
+%\SOLUTION
+
+\begin{document}
+
+\maketitle
+
+\begin{notes}
+
+\section*{Conditional Probability}
+\begin{description}
+    \item[Conditional Probability] - Suppose we observe event $B$ and are interested in the probability of event $A$ occurring given this information. Then,
+        \[P(A|B) = \frac{P(A \cap B)}{P(B)}\]
+    \item[Bayes' Rule] - This is arguably one of the most important concepts and tools you will
+    learn in this course. 
+        \[P(A|B) = \frac{P(B|A)P(A)}{P(B)}\]
+\end{description}
+
+\subsection*{Bridging Conditional Probability and Sets}
+
+An intuitive way to visualize conditional probability is to think about the intersection of sets.  In order to find the intersection of two different sets ${A}$ and ${B}$, we establish one of these sets to be our sample space and find the likely occurrence of the other set within this established sample space.
+       $$P(A\cap B) = P(B|A)P(A) = P(A|B)P(B)$$
+$$P(A_1\cap A_2\cap A_3\cap\cdots A_n) = P(A_1|A_2\cap A_3\cap\cdots A_n)P(A_2| A_3\cap\cdots A_n)\cdots P(A_{n-1}|A_n)$$
+
+\subsection*{Law of Total Probability (LOTP)}
+A common theme in this course is that it is far easier to solve a problem by breaking it down into smaller, simpler components than tackling it head-on. LOTP is one such tool. Suppose you want to find the probability of some event $B$, and you can partition the sample space into disjoint events $A_1, A_2, \dots, A_n$. Then, 
+\begin{align}
+    P(B) &= \sum_{i=1}^n P(B | A_i) P(A_i)\\
+    &= \sum_{i=1}^n P(B \cap A_i)
+\end{align}
+
+We often use LOTP with Bayes' rule! Specifically, the denominator of Bayes' rule, $P(B)$, is often difficult to calculate outright, so we will instead calculate it in terms of LOTP. 
+
+\subsection*{Extra Conditioning}
+Incorporating extra information $C$ is a simple extension of Bayes' rule and LOTP:
+\begin{align}
+    P(A|B, C) &= \frac{P(A \cap B | C)}{P(B|C)} \\
+    &= \frac{P(B|A,C)P(A|C)}{P(B|C)}\\
+    P(B|C) &= \sum_{i=1}^n P(B | A_i, C) P (A_i |C)\\
+    &= \sum_{i=1}^n P(B \cap A_i |C)
+\end{align}
+
+\subsection*{Disjoint vs. Independent}
+Disjoint, or mutually exclusive, events are events that cannot occur simultaneously. That is, observing event $A$ precludes the possibility of also observing event $B$. We can state this equivalently as 
+    \[P(A \cap B) = 0\]
+Independent events are events such that observing event $B$ yields no information about the possibility of also observing event $A$. That is, conditioning on observing event $B$, the probability of observing  event $A$ is unchanged.
+    \[P(A|B) = P(A)\]
+We can apply this result to Bayes' rule and quickly demonstrate an alternative definition of independence:
+    \[P(A \cap B) = P(A)P(B)\]
+
+Another form of independence is conditional independence. Two events $A$ and $B$ are said to be conditionally independent given $C$ if 
+    \[P(A \cap B | C) = P(A|C) P(B|C)\]
+However, just as pairwise independence does not imply independence (and vice versa), conditional independence does not imply independence (and vice versa).
+\end{notes}
+\newpage
+       
+
+\section*{Practice Problems}
+\begin{exercise}{Birth Probabilities}
+A couple tells you they plan on having two children.
+\begin{enumerate}
+    \item Let {A} be the event that at least one of their kids is a girl. Assuming that having a boy or a girl are equally likely. What is $P({A})$?
+    \item Let {B} be the event that at least one of their kids is a boy. What is $P(A\cap B)$?
+    \item What is $P(B|A)$?
+    \item Are {A} and {B} independent events? Are {A} and {B} disjoint events?
+\end{enumerate}
+\end{exercise}
+\begin{solution}{3}
+\begin{enumerate}
+    \item {A} is the complement of the event: "Neither child is a girl", which occurs with probability $\frac{1}{2}\cdot\frac{1}{2}$. Thus, the probability of having at least one girl is $1=\frac{1}{4}=\frac{3}{4}$.
+    \item This condition implies that the family must have 1 boy and 1 girl exactly. Since birth order does not matter, we have 2 out of 4 equally likely possibilities for a probability of $\frac{1}{2}$.
+    \item Using our definition of conditional probability: \[P(B|A) = \frac{P(A\cap B)}{P(A)} = \frac{\frac{1}{2}}{\frac{3}{4}} = \frac{2}{3}\]
+    \item {A} and {B} are independent if and only if $P(B|A) = P(B)$. In other words, knowing the result of {A} gives us no additional information about {B}. In this case however, we see that $P(B|A) \neq P(B)$ because the former is $\frac{2}{3}$ while the latter is $\frac{3}{4}$. {A} and {B} are also not disjoint because it is possible for at least one to be a girl and at least one to be a boy at the same time. We know this because we found in part (b) that $P(A\cap B) \neq 0$.
+\end{enumerate}
+\end{solution}
+
+
+\begin{exercise}{Taking Tests}
+Fred decides to take a series of $n$ tests, to diagnose whether he has a certain disease (any individual test is not perfectly reliable, so he hopes to reduce his uncertainty by taking multiple tests). Let D be the event that he has the disease, $p = P(D)$ be the prior probability that he has the disease, and $q = 1-p$. Let $T_j$ be the event that he tests positive on the $j$th test. 
+
+\begin{enumerate}
+\item [(a)] Assume for this part that the tests are conditionally independent given Fred's disease status. Let $a = P(T_j | D)$ and $b = P(T_j | D^c)$, where $a$ and $b$ don't depend on $j$. Find the posterior probability that Fred has the disease given that he tests positive on all $n$ of the $n$ tests. 
+
+\item [(b)] Suppose that Fred tests positive on all $n$ tests. However, some people have a certain gene that makes them \textit{always} test positive. Let $G$ be the event that Fred has the gene. Assume that $P(G) = \frac{1}{2}$ and that $D$ and $G$ are independent. If Fred does \textit{not} have the gene, then the test results are conditionally independent given his disease status. Let $a_0 = P(T_j | D, G^c)$ and $b_0 = P(T_j | D^c, G^c)$, where $a_0$ and $b_0$ don't depend on $j$. Find the posterior probability that Fred has the disease, given that he tests positive on all $n$ of the tests. 
+
+\end{enumerate}
+\end{exercise} 
+
+
+\begin{solution}{3} 
+Let $T = T_1 \cap T_2 \ldots \cap T_n$ be the event that Fred tests positive on all tests. 
+\begin{enumerate}
+\item [(a)] Using Bayes Rule and the LOTP, we get: 
+\begin{align*}
+P(D | T) &= \frac{P(T | D) P(D)}{P(T)} \\ 
+&= \frac{P(T | D) P(D)}{P(T | D) P(D) + P(T | D^c) P(D^c)} \\ 
+&= \boxed{\frac{pa^n}{pa^n + qb^n}}
+\end{align*}
+\item [(b)] Using the same formula as above, this time we have different values for $P(T | D)$ and $P(T | D^c)$ because we need to condition on whether Fred has the gene. 
+\begin{align*}
+P(T | D) &= P(T | G, D) \cdot P(G | D) + P(T | D, G^c) P(G^c | D) \\ 
+&= \frac{1}{2} + \frac{a_0^n}{2} \\ 
+P(T | D^c) &= P(T | G, D^c) \cdot P(G | D^c) + P(T | G^c, D^c) \cdot P(G^c | D^c) \\ &= \frac{1}{2} + \frac{b_0^n}{2} 
+\end{align*}
+Therefore, the final answer is: 
+
+$$ P(D | T) = \boxed{\frac{p(1 + a_0^n)}{p(1 + a_0^n) + q(1 + b_0^n)}}$$
+\end{enumerate}
+
+\end{solution}
+
+
+\begin{exercise}{Law and Order}
+\textit{Adapted from Jimmy Lin's section notes.}
+\begin{enumerate}
+    \item [(a)] A three-person jury has two members who independently have some probability $p$ of making
+    the correct decision, and a third member who makes each decision with a coin flip. A one-person
+    jury has probability $p$ of making the right decision. Which jury has a higher probability
+    of making the right decision?
+    
+    \item[(b)] Breaking news! The defendant is mega-corporation USGSO, which is on trial for violating some poorly defined staffing regulations. The corporation's representative arrives at the courthouse, but because USGSO keeps changing its employment policy, the representative doesn't know if he needs to stay or not. Over the next hour, we takes $n$ steps, right or left with equal probability, in his confusion. At the end of the hour, if he is not back at the courthouse, the judge will rule him 
+    guilty. Otherwise, the trial will proceed with the jury from part (a). What is the probability
+    that USGSO will be convicted?
+    
+    \item[(c)] The judge decides that the trial needs members from a different council to enforce
+    the honor of the court. Shira, the main enforcer, misses trials with probability $\frac{2}{20}$ and 
+    Tim, the substitute, misses trials with probability $\frac{4}{20}$. At least one of them
+    misses trials with probability $\frac{5}{20}$. However, because Shira and Tim are always 
+    busy writing section notes for Stat 110, their absences are not necessarily independent. 
+    Given this information, what is the probability that the trial will not occur?
+\end{enumerate}
+
+\begin{solution}{4}
+\begin{enumerate}
+    \item [(a)] Let $A$ be the event that the jury makes the correct decision, and let $B$ be the
+    event that the coin flip is in favor of the correct decision. By LOTP, 
+        \[P(A) = P(A|B)P(B) + P(A|B^c)P(B^c)\]
+    For the first term, if the coin flip favors the correct decision, then at least one of the 
+    first two jurors were correct. For the first term, since the coin flip favors the wrong decision,
+    the jury is only correct if both of the first jurors voted correctly. 
+    \begin{align}
+        P(A) &= \left[1- (1-p)^2\right]\cdot \frac{1}{2} + p^2 \cdot \frac{1}{2}\\
+        &= \frac{1}{2}(2p-p^2) + \frac{1}{2} p^2\\
+        &= p
+    \end{align}
+    
+    So both juries have the same probability of being right!
+    
+    \item [(b)] Again, using LOTP, the probability that USGSO is convicted depends on 
+    whether or not the representative is absent or not. To apply LOTP, we must first determine
+    the number of walks the representative can go on, and the number that result in him returning
+    to the courthouse. There are $2^n$ possible walks, and ${n \choose n/2}$ walks that bring him
+    back to the courthouse (he only returns to the courthouse if he takes $\frac{n}{2}$ steps to the left and an equivalent number to the right and vise versa). Let $C$ be the event that USGSO is convicted and $A$ be the event that the representative is absent.
+    \begin{align}
+        P(C) &= P(C |A )P(A) + P(C|A^c)P(A^c)\\
+        &= \left[1 - \frac{{n \choose n/2}}{2^n} \right] + p \cdot \frac{{n \choose n/2}}{2^n}\\
+        &= 1 - \frac{{n \choose n/2}}{2^n}(1-p)
+    \end{align}
+    
+    \item [(c)] Let $S$ be the event that Shira arrives, and let $T$ be the event that Tim arrives. 
+    We can apply de Morgan's Law.
+    \begin{align}
+        P(S^c \cap T^c) &= P[(S \cup T)^c]\\
+        &= 1- P(S \cup T) \\
+        &= 1 - (P(S) + P(T)  - P(S \cap T))\\
+        &= 1 - [(1- P(S^c)) + (1- P(T^c)) - (1 - P(S^c \cup T^c))]\\
+        &= 1- \frac{18+16-15}{20} = \frac{1}{20}
+    \end{align}
+\end{enumerate}
+\end{solution}
+\end{exercise}
+
+
+
+% Literally just a SIG interview question reworded to reflect the current season LOL
+\begin{exercise}{"Fun" Interview Problem 1}
+Suppose the Harvard Consulting, Investment, and Tech Group\texttrademark  currently consists of two freshmen and some number of upperclassmen. A new student joins the group, but she forgot to indicate what year she was in! At the next club meeting, a recruiter from BainBookSachs\texttrademark  comes in and plucks a lucky student to join their ranks. Given that the student is a freshman, what is the probability that the student that just joined was a freshman? Suppose that freshmen and upperclassmen are equally likely to join HCITG. 
+
+\begin{solution}{2}
+Let there be $u$ upperclassmen in the group, $A$ be the event that the new student was a freshman, and $B$ be the probability that the selected student was the freshman. We are clearly interested in 
+ \[P(A|B) = \frac{P(B|A)P(A)}{P(B)}\]
+Here, $P(B|A) = \frac{3}{3+u}$, as we are conditioning that a freshman joined the group. Next, we can calculate $P(B)$ using LOTP. 
+    \[P(B) = P(B|A)P(A) + P\left(B|A^c\right)P\left(A^c\right) = \frac{1}{2}\cdot\frac{3}{3+u} + \frac{1}{2}\cdot  \frac{2}{3+u}\]
+Plugging everything in, we find that $P(A|B) = \frac{3}{5}$
+\end{solution}
+\end{exercise}
+
+
+\begin{exercise}{"Fun" Interview Problem 2}
+Welcome to your interview! On your table you will find a revolver with \textbf{six} chambers. I've loaded two real bullets \textbf{side-by-side}, while the remaining four chambers are empty. Let me spin the chamber and aim at you... Click. No bullet. Now, I'm going to shoot one more time, but do you want me to spin the barrel again first or just pull the trigger?  (Note: This is an actual interview question that's fairly common in first-round finance interviews)
+
+\begin{solution}{2}
+The probability that you are shot if you spin the barrel again is simply $\frac{1}{3}$, as there are still two bullets and four empty chambers. To calculate the probability of being shot if the interviewer pulls the trigger right away, we can use conditional probability! Let $B$ be the event that the previous shot was not a bullet, and let $A$ be the event that the next adjacent shot in the chamber is a bullet. We know that $P(B) = \frac{2}{3}$ and $P(A \cap B) = \frac{1}{6}$, as there is only one way for the previous shot to not be a bullet while the next shot is a bullet. Therefore, 
+    $$P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{1}{4}$$
+So you're better off taking the next shot without spinning the chamber!     
+\end{solution}
+
+\end{exercise}
+\end{document}

@@ -1,0 +1,51 @@
+---
+title: "Stat 110: Section 1"
+author: Justin Zhu
+date: August 25, 2018
+fontsize: 12pt
+geometry: margin=1in
+output: pdf_document
+---
+\documentclass[11pt]{article}
+\usepackage{stat110}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\title{Probability and Counting}
+\sectionnum{1}
+
+\author{\justin}
+
+%\SOLUTION
+
+\section{The language of probability}
+
+Like the English language, the language of probability has its own nouns, verbs, and adjectives.  Confusing these parts of speech will result in "category errors."
+
+***Random variable***:  **A random variable is a variable that takes on a random value when given the sample space.
+
+***Sample space***: A sample space contains all the possible outcomes that could happen.
+
+***Event***: An event is a certain outcome occuring before the outcome has occurred.
+
+***Probability***: **Probability will always be a value between 0 and 1 that expresses how likely an event will occur out of all possible events in the sample space.**
+
+
+
+We can simplify a lot of the basics of probability into different sets.
+
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
