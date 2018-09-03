@@ -1,5 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{stat110}
+\newif\ifdraft
+%\drafttrue % or \draftfalse
 
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
@@ -8,7 +10,7 @@
 \title{Random Variables and their Distributions}
 \sectionnum{3}
 
-\author{\shira, \tim}
+\author{\justin}
 
 %\SOLUTION
 
@@ -17,7 +19,7 @@
 \maketitle
 
 \begin{notes}
-
+\ifdraft
 \section*{Useful Formulas from Last Week}
 \begin{description}
 	\item[Conditional Probability] - $P({\bf A}|{\bf B})$ - Probability of ${\bf A}$ given ${\bf B}$ occurred.
@@ -31,6 +33,7 @@ P({\bf B}) &= P({\bf B} | {\bf A}_1)P({\bf A}_1) + P({\bf B} | {\bf A}_2)P({\bf 
 P({\bf B}) &= P({\bf B} | {\bf A})P({\bf A}) + P({\bf B} | {\bf A^c})P({\bf A^c}) \\
    \end{align*} 
 \end{description}
+\fi
 \section*{Famous Applications of Conditional Probability}
 \subsection*{Monty Hall}
 If we knew the location of the car, we could determine whether or not switching doors would be beneficial. This motivates us to condition on which door the car is behind. Without loss of generality, suppose we chose door 1. Let $C_1, C_2, C_3$ be the events that the car is behind the first, second and third doors respectively. Let $W$ be the event that we win and receive the car. We will analyze the two situations. In both cases, we will use LOTP in the following way: 
