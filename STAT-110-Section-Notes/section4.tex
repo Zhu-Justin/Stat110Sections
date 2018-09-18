@@ -1,0 +1,331 @@
+\documentclass[11pt]{article}
+\usepackage{stat110}
+
+\title{Expected Value and Indicators}
+\sectionnum{4}
+
+\author{\shira, \tim, \creds}
+
+\SOLUTION
+
+\begin{document}
+
+\maketitle
+
+\begin{notes}
+
+\section*{Important Distributions}
+
+\subsection*{Bernoulli Distribution}
+\begin{description}
+    \item[Bernoulli] The Bernoulli distribution is the simplest case of the Binomial distribution, where we only have one trial, or $n=1$. Let us say that X is distributed \Bern($p$). We know the following:
+	\item[Story.] $X$ ``succeeds'' (is 1) with probability $p$, and $X$ ``fails'' (is 0) with probability $1-p$.
+	\item[Example.] A fair coin flip is distributed \Bern($\frac{1}{2}$).
+	\item[PMF.] The probability mass function of a Bernoulli is:
+\[P(X = x) = p^x(1-p)^{1-x}\]
+or simply
+\[P(X = x) = \begin{cases} p, & x = 1 \\ 1-p, & x = 0 \end{cases}\]
+\end{description}
+
+\subsection*{Binomial Distribution}
+\begin{description}
+    \item[Binomial] Let us say that $X$ is distributed \Bin($n,p$). We know the following:
+	\item[Story] $X$ is the number of ``successes'' that we will achieve in $n$ independent trials, where each trial can be either a success or a failure, each with the same probability $p$ of success.
+	\item[Example] If Jeremy Lin makes 10 free throws and each one independently has a $\frac{3}{4}$ chance of getting in, then the number of free throws he makes is distributed  \Bin($10,\frac{3}{4}$), or, letting X be the number of free throws that he makes, X is a Binomial Random Variable distributed  \Bin($10,\frac{3}{4}$).
+	\item[PMF] The probability mass function of a Binomial is:
+\[P(X = x) = {n  \choose x} p^x(1-p)^{n-x}\]
+\end{description}
+
+\subsection*{Hypergeometric}
+Let us say that $X$ is distributed $\HGeom(w, b, n)$. We know the following:
+\begin{description}
+	\item[Story] In a population of $b$ undesired objects and $w$ desired objects, $X$ is the number of ``successes" we will have in a draw of $n$ objects, without replacement.
+	\item[Example] 1) Let's say that we have only $b$ Weedles (failure) and $w$ Pikachus (success) in Viridian Forest. We encounter $n$ of the Pokemon in the forest, and $X$ is the number of Pikachus in our encounters. 2) The number of aces that you draw in 5 cards (without replacement). 3) You have $w$ white balls and $b$ black balls, and you draw $b$ balls. $X$ is the number of white balls you will draw in your sample. 
+	\item[PMF] The probability mass function of a Hypergeometric is:
+\[P(X = k) = \frac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}\]
+\end{description}
+
+\subsection*{Geometric} Let us say that $X$ is distributed $\Geom(p)$. We know the following:
+\begin{description}
+	\item[Story] $X$ is the number of ``failures" that we will achieve before we achieve our first success. Our successes have probability $p$.
+	\item[Example] If each pokeball we throw has a $\frac{1}{10}$ probability to catch Mew, the number of failed pokeballs will be distributed $\Geom(\frac{1}{10})$.
+	\item[PMF] With $q = 1-p$, the probability mass function of a Geometric is:
+\[P(X = k) = q^kp\]
+\end{description}
+
+\subsection*{Negative Binomial} Let us say that $X$ is distributed $\NBin(r, p)$. We know the following:
+\begin{description}
+	\item[Story] $X$ is the number of ``failures" that we will achieve before we achieve our $r$th success. Our successes have probability $p$.
+	\item[Example] Thundershock has 60\% accuracy and can faint a wild Raticate in 3 hits. The number of misses before Pikachu faints Raticate with Thundershock is distributed $\NBin(3, .6)$.
+	\item[PMF] With $q = 1-p$, the probability mass function of a Negative Binomial is:
+\[P(X = n) = {n+r - 1 \choose r -1}p^rq^n\]
+\end{description}
+
+\subsection*{Poisson Distribution (Discrete)}
+\begin{description}
+\item Let us say that $X$ is distributed $\Pois(\lambda)$. We know the following:
+	\item[Story] There are rare events (low probability events) that occur many different ways (high possibilities of occurences) at an average rate of $\lambda$ occurrences per unit space or time. The number of events that occur in that unit of space or time is $X$.
+	
+	\item[Example] A certain busy intersection has an average of 2 accidents per month. Since an accident is a low probability event that can happen many different ways, the number of accidents in a month at that intersection is distributed $\Pois(2)$. The number of accidents that happen in two months at that intersection is distributed $\Pois(4)$
+	
+	\item[PMF] The PMF of a Poisson is:
+\[P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}\]	
+	\item[Chicken and Egg Problem] A very important example to know for the Poisson distribution is the Chicken and Egg problem, which says that if the number of eggs laid is $\Pois(\lambda)$ and each egg independently hatches with probability $p$, then the number of chicks will be distributed $\Pois(\lambda p)$. 
+	
+	\item [Limit of the Binomial] If we take the binomial distribution, and let $n$ be really large, and $p$ be very small, then the distribution can be apprxomiated as $\Pois(np)$. 
+
+\end{description}
+
+\section*{Discrete Distributions Overview}
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{cccccc}
+\textbf{Distribution} & \textbf{PMF and Support} & \textbf{E(X)}  & \textbf{Variance} & \textbf{Equivalent To}\\
+\hline
+\shortstack{Bernoulli \\ \Bern($p$)} & \shortstack{$P(X=1) = p$ \\$ P(X=0) = q$} & $p$ & $pq$ & $\Bin(1, p)$ \\
+\hline
+\shortstack{Binomial \\ \Bin($n, p$)} & \shortstack{$P(X=k) = {n \choose k}p^k(1-p)^{n-k}$  \\ $k \in \{0, 1, 2, \dots n\}$}& $np$ & $npq$ & Sum of $n$ Bern($p$) \\
+\hline
+\shortstack{Geometric \\ \Geom($p$)} & \shortstack{$P(X=k) = q^kp$  \\ $k \in \{$0, 1, 2, \dots $\}$}& $\frac{q}{p}$ & $\frac{q}{p^2}$ & \NBin($1, p$)\\
+\hline
+\shortstack{First Success \\ $\FS(p)$} & \shortstack{$P(X=k) = q^{k-1}p$  \\ $k \in \{$1, 2, 3, \dots $\}$}& $\frac{1}{p}$ & $\frac{q}{p^2}$ & \Geom(p) + 1\\
+\hline
+\shortstack{Negative Binomial \\ \NBin($r, p$)} & \shortstack{$P(X=n) = {n+r - 1 \choose r -1}p^rq^n$ \\ $n \in \{$0, 1, 2, \dots $\}$} & $r\frac{q}{p}$ & $r\frac{q}{p^2}$ &  Sum of $r$ Geom($p$)\\
+\hline
+\shortstack{Hypergeometric \\ \HGeom($w, b, n$)} & \shortstack{$P(X=k) = \sfrac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}$ \\ $k \in \{$0, 1, 2, \dots, \min(n, w) $\}$} & $n\frac{w}{b+w}$ &&  \\
+\hline
+\shortstack{Poisson \\ \Pois($\lambda$)} & \shortstack{$P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}$ \\ $k \in \{$0, 1, 2, \dots $\}$} & $\lambda$ & $\lambda$ &  \\
+
+\end{tabular}
+\end{center}
+
+
+\section*{Expected Value} 
+The \textbf{Expected Value} (or \textit{expectation, mean}) of a random variable can be thought of as the "weighted average" of the possible outcomes of the random variable. Mathematically, if $x_1, x_2, x_3, \dots$ are all of the possible values that $X$ can take, the expected value of $X$ can be calculated as follows:
+
+$$E(X) = \sum\limits_{i}x_iP(X=x_i)$$
+
+\subsection*{Linearity of Expectation}
+The most important property of expected value is \textbf{Linearity of Expectation}. For \textbf{any} two random variables $X$ and $Y$, $a$ and $b$ scaling coefficients and $c$ is our constant, the following property of holds:
+
+\[E(aX + bY + c) = aE(X) + bE(Y) + c \]
+
+The above is true regardless of whether $X$ and $Y$ are independent. 
+
+
+\subsection*{Conditional Expected Value} 
+Conditional distributions are still distributions. Treating them as a whole and applying the definition of expectation gives: 
+$$\ E(X | A) = \sum\limits_{i}x_iP(X=x_i | A)$$
+
+\section*{Indicator Random Variables} 
+
+Indicator Random Variables are random variables whose value is 1 when a particular event happens, or 0 when it does not. Let $I_A$ be an indicator random variable for the event $A$. Then, we have: 
+\[
+I_A =
+ \begin{cases}
+   1 & \text{$A$ occurs} \\
+   0 & \text{$A$ does not occur}
+  \end{cases}
+\]
+
+Suppose $P(A) = p$. Then, $I \sim \Bern(p)$ because $I$ has a $p$ chance of being 1, and a $1-p$ chance of being 0. 
+
+\subsection*{Properties of Indicators}
+\begin{itemize}
+\item $(I_A)^2 = I_A$, and $(I_A)^k = I_A$ for any power $k$.
+\item $I_{A^c} = 1 - I_A$
+\item $I_{A \cap B} = I_A I_B$ is the indicator for the event $A \cap B$ (that is, $I_A I_B = 1$ if and only if $A$ and $B$ occur, and 0 otherwise)
+\item $I_{A \cup B} = I_A + I_B - I_A I_B$
+\end{itemize}
+
+\subsection*{Fundamental Bridge} 
+The fundamental bridge is the idea that $E(I_A) = P(A)$. When we want to calculate the expected value of a complicated event, sometimes we can break it down into many indicator random variables, and then apply linearity of expectation on that. For example, if $X = I_1 + I_2 + \ldots + I_n$, then: 
+\begin{align*}
+E(X) &= E(I_1) + E(I_2) + \ldots + E(I_n) \\ 
+&= P(I_1) + P(I_2) + \ldots + P(I_n) 
+\end{align*}
+
+\section*{Variance}
+\textbf{Variance} tells us how spread out the distribution of a random variable is. It is defined as
+
+$$\var(X) = E\brack{(X - E(X))^2} = E(X^2) - (E(X))^2$$
+
+\subsection*{Properties of Variance}
+\begin{itemize}
+\item $\var(cX) = c^2 \var(X)$
+\item $\var(X \pm Y) = \var(X) + \var(Y)$ if $X$ and $Y$ are independent
+\end{itemize}
+
+\end{notes}
+
+
+\newpage
+\section*{Practice Problems}
+
+\begin{exercise}{Dice collector}
+What is the expected number of times a die must be rolled until the numbers 1 through 6 have all shown up at least once?
+\end{exercise}
+
+\begin{solution}{2}
+Let $X$ be the number of times the die is rolled. Let's express $X$ as the sum of simpler r.v.s:
+$$X = T_1 + T_2 + \ldots + T_6$$
+where $T_1$ is the number of rolls until the $1^{st}$ unique number shows up, $T_2$ is the number of \textit{additional} rolls until the $2^{nd}$ unique number, and so on. Note that $T_1$ always equals 1. Using the story of the Geometric, $T_2 \sim 1 + \Geom\paren{\frac{5}{6}}$, $T_3 \sim 1 + \Geom\paren{\frac{4}{6}}$, etc. 
+
+By linearity of expectation: 
+\begin{align*}
+E(X) &= E(T_1) + E(T_2) + \ldots + E(T_6) \\
+&= 1 + \frac{6}{5} + \frac{6}{4} + \frac{6}{3} + \frac{6}{2} + \frac{6}{1} \\
+&= \boxed{14.7}
+\end{align*}
+\end{solution}
+
+\begin{exercise}{Mutual Friends}
+Alice and Bob have just met, and wonder whether they have a mutual friend. Each has 50 friends, out of 1000 other people who live in their town. They think that it's unlikely that they have a friend in common, saying each of us is only friends with 5\% of the people here, so it would be very unlikely that our two 5\%'s overlap.
+
+Assume that Alice's 50 friends are a random sample of the 1000 people (equally likely to be any 50 of the 1000), and similarly for Bob. Also assume that knowing who Alice's friends are gives no information about who Bob's friends are. Let $X$ be the number of mutual friends they have. 
+\begin{enumerate}
+\item Compute $E(X)$ 
+\item Find the PMF of $X$.
+\item Is the distribution of X one of the important distributions we have looked at? If so, which?
+\end{enumerate}
+\end{exercise}
+\begin{solution}{3}
+\vspace{-5mm}
+\begin{enumerate} 
+\item Let $I_k$ be an indicator random variable representing whether the $k$th person is a mutual friend of Alice and Bob. Then, we can write \begin{align*}
+E(X) &= E\left( \sum_{k = 1}^{1000} I_k \right) \\ 
+&= \sum_{k = 1}^{1000} E(I_k) \\ 
+&= 1000 \cdot P(I_k = 1) \\ 
+&= 1000 \cdot \pfrac{50}{1000}^2 = \boxed{2.5}
+\end{align*}
+
+Here, we used linearity of expectation and then the fundamental bridge. The probability that any particular person is a mutual friend of Alice and Bob is $(50/1000)^2$ because being a friend of Alice and a friend of Bob are independent events. 
+\item Suppose that Alice is friends with a fixed group of 50 people. We need to calculate the probability that out of those 50 people, exactly $k$ of them are also Bob's friends. This would be the probability $P(X = k)$.\vspace{0.2em}
+
+First, we need to pick $k$ of these 50 of Alice's friends to be Bob's friends as well. Then, we need to choose $50-k$ other friends for Bob from the 950 remaining non-Alice friends. We multiply those two together to get the total number of ways Bob can have 50 friends. Finally, we divide by the number of ways Bob could have any 50 friends out of 1000. We get: 
+
+$$ P(X = k) = \frac{{50 \choose k} {950 \choose 50-k}}{{1000 \choose 50}}$$ 
+
+\item Yes, this is the PMF of a hypergeometric distribution. We can think of the problem as follows: Bob is choosing 50 balls out of 50 white balls (Alice's friends) and 950 black balls (not Alice's friends). The number of white balls he ends up choosing is distributed $\HGeom(50, 950, 50)$. 
+\end{enumerate}
+\end{solution}
+\newpage
+\begin{exercise}{Min and Max} 
+Let $X \sim \Bin \left(n, \frac{1}{2} \right)$ and $Y \sim \Bin \left( n+1, \frac{1}{2} \right)$ independently. 
+\begin{enumerate}
+\item Let V = min$(X,Y)$ be the smaller of $X$ and $Y$, and let $W = $ max($X,Y$). So if $X$ crystalizes to $x$ and $Y$ crystalizes to $y$, then $V$ crystalizes to $\min(x,y)$ and $W$ crystalizes to $\max(x,y)$. Find $E(V) + E(W)$. 
+
+\item Show that $E|X-Y| = E(W) - E(V)$, with notation as in (a). 
+
+\item Compute $\var(n - X)$. 
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}{3}
+\vspace{-5mm}
+\begin{enumerate}
+\item Note that $V + W = X + Y$ because adding the larger and smaller of two numbers is the same as adding both numbers). Therefore, by linearity of expectation, we get: 
+
+$$ E(V) + E(W) = E(V+ W) = E(X + Y) = E(X) + E(Y) = \boxed{\frac{2n+1}{2}}$$ 
+
+\item Note that $|X - Y| = W - V$ because the absolute difference between two numbers is equal to the larger minus the smaller. Therefore, $$ E|X - Y| = E(W - V) = E(W) - E(V)$$
+
+\item We can use the property of variances, which says that $\var(X - Y) = \var(X) + \var(Y)$. We get $$\var(n - X) = \var(n) + \var(-X) = 0 + \var(X) = \boxed{n/4}$$. 
+\end{enumerate}
+\end{solution}
+
+\begin{exercise}{Expected Number and Variance of Matches}
+Suppose 100 people, each with a hat. We mix the hats and hand them out randomly to each person.
+\begin{enumerate}
+\item What is the expected number of people who get their own hat?
+\item What is the variance of the number of people who get their own hat?
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}{4}
+Let $I_k$ be an indicator random variable representing whether the $k$th person gets his own hat.
+\begin{enumerate}
+\item We have $E\paren{I_k} = \frac{1}{100}$ since the it is equally probable for the $k$th person to get any of the 100 hats. Hence,
+\begin{align*}
+E(X) &= E\paren{\sum_{k=1}^{100} I_k} \\
+&= \sum_{k=1}^{100} E\paren{I_k} \\
+&= 100 \cdot \frac{1}{100} \\
+&= \boxed{1}
+\end{align*}
+\item By the definition of variance,
+$$\var(X) = E(X^2) - (E(X))^2 = E(X^2) - 1$$
+using the result in (a). To find $E(X^2)$, we can expand the indicator r.v. representation and use properties of indicators:
+\begin{align*}
+E(X^2) &= E\brack{\paren{I_1 + I_2 + \ldots + I_{100}}^2} \\
+&= E(I_1^2 + I_2^2 + \ldots + I_{100}^2 + 2\sum_{i < j}I_i I_j) \\
+&= E(I_1 + I_2 + \ldots + I_{100} + 2\sum_{i < j}I_i I_j) \\
+&= 100 E(I_1) + 2 \binom{100}{2} E(I_1 I_2) \\
+\end{align*}
+Since $I_1 I_2$ is the indicator that the 1st and 2nd people both get their own hats, $E(I_1 I_2) = \frac{1}{100}\frac{1}{99}$. Thus,
+$$E(X^2) = 100 \cdot \frac{1}{100} + 2 \binom{100}{2} \cdot \frac{1}{100} \cdot \frac{1}{99} = 2$$
+and
+$$\var(X) = E(X^2) - 1 = 2 - 1 = \boxed{1}$$
+\end{enumerate}
+\end{solution}
+
+
+\begin{exercise}{Prizes}
+There are $n$ prizes, with values \$1, \$2 \ldots \$$n$. You get to choose $k$ random prizes, without replacement. What is the expected total value of the prizes you get? 
+
+\end{exercise} 
+
+\begin{solution}{1.5}
+Let $I_j$ be indicator random variables representing whether the prize of $\$j$ is received. We know that $E(I_j) = P(\text{Gift of \$$j$ is selected}) = \frac{k}{n}$ (because there are ${n-1 \choose k-1}$ for the item to be selected, and ${n \choose k}$ total ways to select $k$ items, and their ratio is $\frac{k}{n}$). 
+
+Let $V$ be the total value of the $k$ prizes you receive. Then, we can write: 
+$$ V = I_1 + 2 I_2 + 3 I_3 + \ldots + n \cdot I_n$$ 
+Finding $E(V)$ and using the fundamental bridge, we get: 
+\begin{align*}
+E(V) &= E(I_1) + E(2 I_2) + E(3 I_3) + \ldots E(n I_n) \\
+&= E(I_1) + 2 E(I_2) + 3 E(I_3) + \ldots n E(I_n) \\ 
+&= \frac{k}{n} \left( 1 +2 + \ldots + n \right) \\ 
+&= \frac{k}{n} \cdot \frac{n(n+1)}{2} \\
+&= \boxed{\frac{k(n+1)}{2}}
+\end{align*} 
+
+\end{solution}
+
+\begin{exercise}{Coin Runs}
+A coin with probability $p$ of Heads is flipped $n$ times. The sequence of outcomes canbe divided into runs (blocks of H's or blocks of T's), e.g., $HHHTTHTTTH$ becomes $\boxed{HHH}\boxed{TT}\boxed{H}\boxed{TTT}\boxed{H}$ , which has 5 runs. Find the expected number of runs.
+
+\textit{Hint}: Start by finding the expected number of tosses (other than the first) where the outcome is different from the previous one.
+\end{exercise}
+\begin{solution}{1.75}
+Let $I_j$ be an indicator random variable for whether or not the $j$th flip is different from the $j-1$st, for $j = 2, 3, \ldots n$. The probability that the $j$th flip is different from the $j-1$st is equal to $p(1-p) + (1-p)p = 2p(1-p)$, meaning $E(I_j) = 2p(1-p)$. Let $X$ be the number of flips such that that flip is different from the previous one. Then $X = I_2 + \ldots + I_n$ and 
+\begin{align*}
+E(X) &= (n-1) \cdot E(I_j) \\ 
+&= 2(n-1)(p)(1-p)
+\end{align*}
+The number of flips for which this is true is one less than the number of runs, so the expected number of runs is: $\boxed{1 + 2(n-1)(p)(1-p)}$. 
+\end{solution}
+
+
+\begin{exercise}{True/False}
+\begin{enumerate}
+\vspace{-5mm}
+\item If $X$ and $Y$ have the same CDF, they have the same expectation.
+\item If $X$ and $Y$ have the same expectation, they have the same CDF.
+\item If $X$ and $Y$ have the same CDF, they must be dependent.
+\item If $X$ and $Y$ have the same CDF, they must be independent.
+\item If $X$ and $Y$ have the same distribution, $P(X < Y)$ is at most $\slfrac{1}{2}$.
+\item If $X$ and $Y$ are independent and have the same distribution, $P(X < Y)$ is at most $\slfrac{1}{2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}{3}
+\vspace{-5mm}
+\begin{enumerate}
+\item \textbf{True}. If $X$ and $Y$ have the same CDF, then they would have the same distribution, and hence the same expectation.
+\item \textbf{False}. Consider the expected values and CDFs of $\Bern(1)$ and $\Bin(2, 0.5)$.
+\item \textbf{False}. Having the same CDF (and equivalently distribution) does not indicate anything about the dependency of the two random variables.
+\item \textbf{False}. Same as above.
+\item \textbf{False}. Think of a clock with two hands, whereby one of the hands is always one unit faster than the other hand.
+\item \textbf{True}. This means that $X$ and $Y$ are i.i.d., and hence by symmetry, $P(X < Y) =  \slfrac{1}{2} \cdot (1 - P(X = Y))$ which is at most $\frac{1}{2}$. 
+\end{enumerate}
+\end{solution}
+\end{document}

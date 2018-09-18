@@ -1,0 +1,214 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stat 110 Section Notes LaTeX style                                           %
+%   written by Carl Jackson (for CS 124)                                       %
+%                                                                              %
+% Put this file in the same directory as your section notes. To use this style %
+% file, use the following basic template:                                      %
+%                                                                              %
+%     \documentclass[11pt]{article}                                            %
+%     \usepackage{stat110}                                                     %
+%                                                                              %
+%     \title{My Awesome Section Notes}                                         %
+%     \sectionnum{2}                                                           %
+%     \author{\evan}                                                           %
+%                                                                              %
+%     \begin{document}                                                         %
+%     \maketitle                                                               %
+%                                                                              %
+%     % Your notes go here                                                     %
+%                                                                              %
+%     \end{document}                                                           %
+%                                                                              %
+%                                                                              %
+% This style file provides a few conveniences:                                 %
+%                                                                              %
+%   - 'exercise' is a theorem-like environment that Does The Right Thing (tm)  %
+%   	  The format is: \begin{exercise}{TITLE} ... \end{exercise}                %
+%   - The 'solution' environment is meant for SOLUTION solutions. They will be    %
+%     printed in a very light gray box to make it easier to scan when you're   %
+%     holding section.                                                         %
+%     The format is: \begin{solution}{NUM_INCHES_BLANK} ... \end{solution}     % 
+%     You need to specifiy how many inches of blank space to give when not staff
+%   - Put \SOLUTION at the top of the document to make it a staff version (i.e.,  %
+%     solutions will be printed inline). If \SOLUTION is not included, a student  %
+%     version will be generated, which includes large chunks of whitespace     %
+%     where the solutions used to be                                           %
+%                                                                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% packages and shit 
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{adjustbox}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{array}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{courier}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage[bottom]{footmisc}
+\usepackage{framed}
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[pdftex]{hyperref}
+\usepackage{latexsym}
+\usepackage{marvosym}
+\usepackage{mathpazo}
+\usepackage{microtype}
+\usepackage{mleftright}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[parfill]{parskip}
+\usepackage{pdfpages}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage{xfrac}
+\graphicspath{ {images/} }
+
+% Authors
+\newcommand{\Justin}{Justin Zhu (justinzhu@college)}
+\newcommand{\tim}{Timothy Kang (tkang01@college)}
+\newcommand{\creds}{Credits to Timothy Kang}
+
+% Solutions?
+\newcommand{\SOLUTION}{
+  \ifx\ISSOLUTION\undefined
+    \newcommand{\ISSOLUTION}{true}
+  \fi
+}
+
+\newcommand{\@sectionnum}{1}
+\newcommand{\sectionnum}[1]{\renewcommand{\@sectionnum}{#1}}
+
+% We shade the background of the solution environment a light gray
+\definecolor{shadecolor}{rgb}{.90,.98,.90}
+
+% Give students a little space to write stuff
+\newcommand{\solutionspace}[1]{\vspace{#1in}}
+
+% Ceiling and floor
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+\newcommand{\titlebox}[4]{
+	\noindent
+	\begin{center}
+	\framebox{
+		\vbox{
+		\hbox to \linewidth { {Statistics 110: Introduction to Probability} \hfill
+        \ifx\ISSOLUTION\undefined
+		  Section #1, Fall 2018
+        \else
+		  Section #1 Solutions, Fall 2018
+        \fi
+        }
+		\vspace{3mm}
+		\hbox to \linewidth { {\Large \bf \hfill #2 \hfill} }
+		\vspace{1mm}
+		\hbox to \linewidth { {\it \hfill TFs: #3 \hfill} }
+		%\hbox to \linewidth { {\it \hfill Credits: #4 \hfill} }
+		}
+	}
+	\end{center}
+	\vspace*{4mm}
+}
+
+% New header format
+\renewcommand{\maketitle}{
+  \titlebox{\@sectionnum}{\@title}{\@author}
+}
+
+\AtBeginDocument{
+  % PDF metadata
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author},
+    pdfcreator = % Nothing. hyperref dumps something dumb here by default
+  }
+
+  \ifx\ISSOLUTION\undefined
+    % Student version of notes
+    \newenvironment{notes}{}{}
+    \newenvironment{solution}[1]{\solutionspace{#1}\comment}{\endcomment}
+  \else
+    % Solution version
+    \newenvironment{notes}{\comment}{\endcomment}
+    \newenvironment{solution}[1]{\shaded{\bf Solution} \newline}{\endshaded}
+    \renewcommand{\newpage}{}
+  \fi
+}
+
+
+\newenvironment{exercise}[1]{\example \textbf{#1.} \newline}{}
+
+\setlist[enumerate, 1]{label=(\alph*)}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{pencil}[theorem]{\noindent \ding{46}}
+\newtheorem{biohazard}[theorem]{\noindent \Biohazard}
+
+\newcommand{\paren}[1]{\mleft(#1\mright)}
+\renewcommand{\brack}[1]{\mleft[#1\mright]}
+\renewcommand{\brace}[1]{\mleft\{#1\mright\}}
+\newcommand{\slfrac}[2]{\left.{}^{#1}\mkern-\medmuskip\right/\!\!{}_{#2}}
+
+\newcommand{\tab}{\hspace*{1.5em}}
+\newcommand\pder[2][]{\ensuremath{\frac{\partial#1}{\partial#2}}}
+\newcommand{\ans}[1]{\framebox[1.2\width]{$#1$}}
+\newcommand{\pfrac}[2]{\left( \frac{#1}{#2} \right)}
+\newcommand{\set}[1]{\{ #1 \}}
+\newcommand{\colorword}[2]{{\color{#2} #1}}
+\newcommand{\ord}{\text{ord}}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+
+\newcommand{\lambdabold}{\mbox{\boldmath$\lambda$}}
+\newcommand{\mubold}{\mbox{\boldmath$\mu$}}           
+\newcommand{\thetabold}{\mbox{\boldmath$\theta$}}   
+\newcommand{\alphabold}{\mbox{\boldmath$\alpha$}}                 
+\newcommand{\betabold}{\mbox{\boldmath$\beta$}}
+\newcommand{\gammabold}{\mbox{\boldmath$\gamma$}}
+            
+\newcommand{\noin}{\noindent}    
+\newcommand{\logit}{\textrm{logit}} 
+\newcommand{\var}{\textrm{Var}}
+\newcommand{\cov}{\textrm{Cov}} 
+\newcommand{\corr}{\textrm{Corr}} 
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\FS}{\mathcal{FS}}
+\newcommand{\Bern}{\textrm{Bern}}
+\newcommand{\Bin}{\textrm{Bin}}
+\newcommand{\Beta}{\textrm{Beta}}
+\newcommand{\Gam}{\textrm{Gamma}}
+\newcommand{\Expo}{\textrm{Expo}}
+\newcommand{\Pois}{\textrm{Pois}}
+\newcommand{\Unif}{\textrm{Unif}}
+\newcommand{\NBin}{\textrm{NBin}}
+\renewcommand{\Bin}{\textrm{Bin}}
+\newcommand{\HGeom}{\textrm{HGeom}}
+\newcommand{\Geom}{\textrm{Geom}}
+\newcommand{\Mult}{\textrm{Mult}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+    \def\independenT#1#2{\mathrel{\setbox0\hbox{$#1#2$}%
+    \copy0\kern-\wd0\mkern4mu\box0}} 
+
+\DeclareSymbolFont{symbolsC}{U}{txsyc}{m}{n}
+\DeclareMathSymbol{\indep}{\mathrel}{symbolsC}{121}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
