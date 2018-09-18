@@ -57,7 +57,7 @@ v[c(1,3,5)]
 
 R does *not* use zero-index.
 
-# Names and Functions
+# Variables and Functions
 We have already seen how "<-" is used in R to store values into a variable.
 You can also use "->" in the other direction.  The arrow, however must point to the variable is assigned the value.  For example, in this example, triplepie and pietriple are both being assigned the same values.
 
@@ -79,7 +79,7 @@ To create a function we can use the "function" keyword and specify parameters.  
 ```{r}
 birthday <- function(n) {
   days_in_year <- 365
-  ans <- 1-prod((365-n+1):365/365^n)
+  ans <- 1-prod((days_in_year-n+1):days_in_year)/days_in_year^n
   return(ans)
 }
 ```
@@ -95,8 +95,19 @@ help(prod)
 We can now finally celebrate some birthdays by typing our function name with the specified parameters!
 
 ```{r}
-birthday(2)
+birthday(1)
+birthday(23)
 ```
+
+How can we plot the relationship between number of people and the probability of getting a matching birthday?  How does changing the number of people in our birthday problem affect the probability?
+
+
+```{r}
+num_of_people <- 1:50
+matching_birthdays_probability <- lapply(num_of_people, birthday)
+plot(num_of_people,matching_birthdays_probability)
+```
+
 
 
 

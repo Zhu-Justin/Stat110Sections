@@ -13,7 +13,7 @@
 
 \author{\justin}
 
-%\SOLUTION
+\SOLUTION
 
 \begin{document}
 
@@ -116,6 +116,11 @@ My trick using the binomial theorem:
 Story proofs are a fundamental and useful way that we will go about proving important results, especially later in the course. To that end, provide story proofs for each of the following results:
 
 \begin{enumerate}
+
+1. Addition suggests combining disjoint cases, while multiplication suggests use of multiplication rule to combine steps of an experiment.
+
+2. Look for patterns similar to the binomial theorem.
+
     \item
     $$\sum_{k=0}^n {n \choose k } = 2^n$$
     \item 
@@ -130,19 +135,16 @@ Story proofs are a fundamental and useful way that we will go about proving impo
 \begin{solution}{4}
 \begin{enumerate}
     \item Suppose we want to figure out all possible
-    teams, of any size, we can make from $n$ people. \\
+    numbers we can represent using n bits.  (Bits are binary, taking on a value of either 0 or 1). \\
     
-    (RHS) Since each person is either on or off
-    the team, there are $2^n$ possible teams. You
-    could view this as a binary sequence, where
-    each person is either a 1 or 0, leading to 
+    (RHS) Since each bit can be either 1 or 0, there are $2^n$ possible bits. Because bits take on 2 values of being either a 1 or 0, there would be 
     $2^n$ total possible sequences. \\
     
     (LHS) ${n \choose k}$ represents the number
-    of teams of size $k$ we can make from $n$ people.
-    ${n \choose 0}$ represents all teams of size 0,
-    ${n \choose 1}$ represents all teams of size 1,
-    and so on. Therefore, $\sum_{k=0}^n {n \choose k}$ represents all possible teams. 
+    of different bit combinations where there are $k$ 1's we can make from $n$ bits.
+    ${n \choose 0}$ represents all bits with no 1's,
+    ${n \choose 1}$ represents all bits with two 1's,
+    and so on. Therefore, $\sum_{k=0}^n {n \choose k}$ represents all possible bits. 
     \item Suppose we have a group of $n$ people and
     a celebrity, and we have to select a committee
     of $k$ people.\\
@@ -191,69 +193,25 @@ Story proofs are a fundamental and useful way that we will go about proving impo
         $${n\choose k} = \frac{n \cdot (n-1) \dotsm (n-k+1)}{k \cdot(k-1)\dots1}$$
 \end{enumerate}
 \end{solution}
+\newpage
+\begin{exercise}{Tinder for psets}
+So many students are taking Stat110 and so many teaching fellows are hired.  Professor Blitzstein is thinking of creating a new app that is able to pair teaching fellows with students.  But first, he must solve some math problems to pitch to the VCs.
 
-\begin{exercise}{So Many Committees}
-An organization with $2n$ people consists of $n$ married couples. A committee of size $k$ is selected, with all possibilities equally likely. Find the probability that there are exactly $j$ married couples within the committee.
+Let Stat110 consist of $n$ students and $n$ TFs so that there are $2n$ people affiliated with Stat110.  An algorithm has already taken the TF's student preferences and the student's TF preferences such that each student is assigned a unique, personal TF.  This algorithm maximizes fulfilled preferences for the class as a whole.  This unique student-personal TF pair will be called a "couple."
+
+At any moment of time, $k$ Stat110 affliates are available to do pset-related activities.  All Stat110 affiliates are available at each given moment of time with equal probability.
+
+Given this information that $k$ Stat110 affiliates are available to do pset-related activities, find the probability that there are exactly $j$ couples doing pset-related activities. 
+
 \end{exercise}
 
 \begin{solution}{2.5}
-We know that there are ${2n \choose k}$ total committees possible. Next, we know there must be exactly $j$ couples within the committee, and there are ${n \choose j}$ ways to decide which couples will be on the committee. Now, it is simply a matter of ensuring that the rest of the $k-2j$ spots are filled with non-couples. \\
+We know that there are ${2n \choose k}$ total people available for pset activities. Next, we know there must be exactly $j$ couples available, and there are ${n \choose j}$ ways to decide which couples will be on available. Now, it is simply a matter of ensuring that the rest of the $k-2j$ spots are filled with non-couples. \\
 
-We have ${n-j \choose k-2j}$ ways to choose couples from the remaining couples. Then, within each of the $k-2j$ pairs, we only need one partner to be on the committee, which means there are $2^{k-2j}$ ways to choose which partner in each couple is on the committee. \\
+We have ${n-j \choose k-2j}$ ways to choose couples from the remaining couples. Then, within each of the $k-2j$ pairs, we only need one partner to be available (and the other must be unavailable), which means there are $2^{k-2j}$ ways to choose which partner in each couple is available. \\
 
-Therefore, the probability that there are exactly $j$ married couples within the committee is 
+Therefore, the probability that there are exactly $j$ couples available and therefore using the app is 
     $$\frac{{n \choose j} {n-j \choose k-2j} 2^{k-2j}}{{\binom{2n} {k}}}$$
-\end{solution}
-
-\begin{exercise}{Counting Chocolates}
-Suppose you have 15 chocolate bars and 10 section students. How many ways can you distribute the chocolate bars to your section students, in each of the following scenarios? 
-\begin{enumerate}
-    \item The chocolate bars are interchangeable (i.e. it doesn't matter where 
-    each particular bar goes).
-    \item The chocolate bars are interchangeable, but each student must receive 
-    at least one. \\
-    Hint: First make sure each student gets a chocolate bar and then figure out
-    what to do with the remaining 5. 
-    \item The chocolate bars are not interchangeable.
-    \item The chocolate bars are not interchangeable, and each student must 
-    receive at least one. \\
-    Hint: Consider randomly giving the chocolate bars to students and then 
-    apply inclusion-exclusion.
-\end{enumerate}
-\end{exercise}
-
-\begin{solution}{4}
-\begin{enumerate}
-    \item In this case, since order does not matter and we have replacement (in 
-    the sense that a student can get multiple bars), we can view the chocolate
-    bars as indistinguishable particles and students as distinguishable boxes.
-    This allows us to use the Bose-Einstein value, which means there are
-        $${10 + 15 -1 \choose 15} = 1307504$$
-    ways to distribute the bars.
-    \item If we distribute 10 chocolate bars to each of the 10 students first, then
-    we only need to figure out how to distribute 5 more. We can directly apply
-    Bose-Einstein again to obtain
-        $${10 + 5 -1 \choose 5} = 2002$$
-    Another way to view this problem visually is to line up the 15 bars. Since
-    each student must receive at least one bar, we simply need to place 
-    9 partitions to divide the line into 10 parts. Since there are 14 spots for
-    partitions, we have 
-        $${14 \choose 9} = {14 \choose 5} = 2002$$
-    ways to distribute the bars.     
-    \item This is simply sampling with replacement where order matters, 
-    so we use the multiplication rule to get $10^{15}$.
-    \item Let $X_i$ be the event that student $i$ does not receive a chocolate bar,
-    and note that 
-        $$P(X_1 \cap X_2 \dots \cap X_k) = \left(\frac{10-k}{10}\right)^{15}$$
-    for $1 \leq k \leq 10$. Now, we are interested in the probability that at least
-    one student does not receive a chocolate bar. We can first calculate this
-    using inclusion-exclusion and the probability we have noted above:
-        $$10\left(\frac{9}{10}\right)^{15} - {10 \choose 2}\left(\frac{8}{10}\right)^{15} + \dotsm + {10 \choose 9}\left(\frac{1}{10}\right)^{15}$$
-    However, we can also use the naive definition of probability. Let $x$ be the number of ways that each student receives at least one chocolate bar. Then, the probability that at least one student does not receive a chocolate bar is simply $\frac{10^{15} - x}{10^{15}}$.\\
-    
-    Equating these two equations and solving for $x$, we see that the number of ways such that each student receives at least one chocolate bar is 
-        $$\sum_{i=0}^9 (-1)^i {10 \choose i}(10-i)^{15}$$
-\end{enumerate}
 \end{solution}
 
 \begin{exercise}{Poker Probabilities.}
@@ -296,7 +254,7 @@ We begin by noting that there are $\binom{52}{5}$ possible five card hands to st
     \end{enumerate}
 \end{solution}
 
-\begin{exercise}{Fun Interview Problem!}
+\begin{exercise}{Brainteaser (credit to Tim Kang)}
 Suppose the probability of at least one car passing you at an intersection over the course of twenty minutes is given by 0.9. What is the probability that at least one car passes you over the course of five minutes? Assume that time intervals of the same length have the same probability of observing at least one car. 
 \end{exercise}
 
