@@ -12,7 +12,7 @@
 
 \author{\justin}
 
-%\SOLUTION
+\SOLUTION
 
 \begin{document}
 
@@ -195,6 +195,7 @@ which is indeed the same answer as before.
 \end{solution}
 \newpage
 
+\ifdraft
 \begin{exercise}{Quick Gambler's Ruin} 
 As in the gambler's ruin problem, two gamblers, $A$ and $B$, make a series of bets, until one of the gamblers goes bankrupt. Let $A$ start out with $i$ dollars and $B$ start out with $N-i$ dollars, and let $p$ be the probability of $A$ winning a bet, with $0 < p < \frac{1}{2}$. Each bet is for $\frac{1}{k}$ dollars, with $k$ a positive integer, e.g., $k=1$ is the original gambler's ruin problem and $k = 20$ means they're betting nickels. What is the probability that $A$ wins the game?
 \end{exercise}
@@ -202,7 +203,7 @@ As in the gambler's ruin problem, two gamblers, $A$ and $B$, make a series of be
 This problem is isomorphic to the gambler's ruin problem except we simply change the relative bet size from \$1 to \$$\frac{1}{k}$ per bet. So we can take the same approach in the gambler's ruin problem except putting everything in appropriate scale: $A$ begins with $ki$ units of money and $k(N-i)$ units of money. Letting $t = \frac{q}{p}$, we have that 
     $$P(\text{$A$ wins}) = \frac{1 - t^{ki}}{1-t^{kN}}$$
 \end{solution}
-
+\fi
 
 \begin{comment}
 Commented out since this is mostly covered in lecture.
@@ -305,7 +306,7 @@ Suppose you are holding 2 spades in your hand, and there are 2 spades showing am
 Since we currently see 4 spades, there are 9 other spades that can be used. Of the 52 cards in the deck, we know what 5 of them are, so we have 47 card values that remain to be seen. To find this probability, we can use the Hyper-Geometric distribution, specifically of HGeom($9, 38, 2$), since there are 9 desirable cards, 38 undesirable cards, and 2 cards that are being drawn. Now, we are interested in the probability that we observe either one or two spades in the two cards we draw. Or $P(X = 1) + P(X=2)$, where $X$ is distributed as above. 
     $$\frac{{9 \choose 1}{38 \choose 1}}{{47 \choose 2}} + \frac{{9 \choose 2}}{{47 \choose 2}}$$
 \end{solution}
-
+\ifdraft
 \begin{exercise}{Conditional Binomial}
 Suppose $X \sim \Bin(n_1, p)$ and $Y \sim \Bin(n_2, p)$ are independent. What is the conditional distribution of $X$ given that $X + Y = k$, where $k \in \{0, 1, \ldots, n_1 + n_2\}$?
 \end{exercise}
@@ -321,5 +322,6 @@ P(X = j | X + Y = k) &= \frac{P(X + Y = k | X = j)P(X = j)}{P(X + Y = k)} \\
 \end{align*}
 This is the PMF of the Hypergeometric distribution with parameters $n_1$, $n_2$, $k$, which we'll learn more about in next week's lectures.
 \end{solution}
+\fi
 
 \end{document}

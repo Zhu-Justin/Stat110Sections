@@ -1,0 +1,24 @@
+---
+title: "Stat 110: R Section "
+author: Justin Zhu
+subtitle: "Credit to Joe Blitzstein,  Kenneth Baclawski, & Matt DosSantos DiSorbo"
+fontsize: 12pt
+geometry: margin=1in
+output: pdf_document
+urlcolor: blue
+---
+
+# Bernoulli
+
+```{r}
+```
+
+# Geometric
+
+```{r}
+```
+
+# First Success
+
+```{r}
+```

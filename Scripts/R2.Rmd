@@ -1,0 +1,165 @@
+---
+title: "Stat 110: Section 2"
+author: Justin Zhu
+subtitle: "Credit to Joe Blitzstein,  Kenneth Baclawski, & Matt DosSantos DiSorbo"
+fontsize: 12pt
+geometry: margin=1in
+output: pdf_document
+urlcolor: blue
+---
+
+# Creating Probability Simulations...
+
+We create vectors filled with 0 or 1. 
+
+0 means that an event didn’t occur, 1 means that the event did occur. 
+
+These 0/1 (off/on) values are indicator variables.  If a vector has half 1’s and half 0’s, then the mean is 1/2, implying that the event occurred 50% of the time. 
+
+We use ```runif(1)``` to generate a random number between 0 and 1 uniformly.
+
+Remember: You can always figure out what a built-in R function does by typing ```help("function_name)``` in the console!
+
+Now, to make sure your simulation is reproducible, we use ```set.seed```.  This function sets and keeps track of your random values being generated.  Leave out ```set.seed``` if you'd like to get different random results from each simulation.
+
+
+```{r}
+set.seed(1)
+#1 is just a number that helps us reference back to this particular seed.
+```
+Now we create vectors to track our indicator variables within our simulations.  In this case, we have 1000 simulations.
+
+```{r}
+sims = 1000
+success_simulation = rep(0,sims)
+```
+
+Now we use a for loop to conduct our simulation
+
+```{r}
+# run the loop
+for(i in 1:sims)
+{
+  
+  # flip to see what the value of a simulation is
+  event = runif(1)
+  
+  # If value from our experiment is less than or equal to zero, success.
+  if(event <= .5)
+  {
+      success_simulation[i] = 1
+  }
+
+# Otherwise, we have a failure and success[i] will continue to equal 0.
+
+# We should get around .5 for our probability of success
+
+ans = mean(success_simulation)
+}
+```
+
+Our probability of success from our simulation is equal to the probability we calculated of $\frac{1}{2}$.
+```{r}
+print(ans)
+```
+
+
+# ...with a condition
+
+Let's consider a specific example.  
+
+Suppose your decision to attend a 9am section is dependent on when you went to bed the night before.  If you went to bed before 11pm, your probability of attending section is 0.8. If you went to bed after 11pm, your probability of going to section is 0.4. Imagine that, on any given day, there is a 0.3 probability that you will sleep before 11pm.
+
+Let  P(A)  be the probability that you attend section, and  P(B)  be the probability that you went to bed before 11pm. If we want to find  P(A), we can break the probability into two cases: when  $B$  occurs and when  $B^c$  occurs.  By employing LOTP, we get:
+
+$P(A)=P(A|B)P(B)+P(A|B^c)P(B^c)$
+ 
+$=0.8(0.3)+0.4(0.7)=0.52$
+
+```{r}
+sims = 1000
+
+#create vectors for early bed time and section attendance
+bedtime_before_11 = rep(0, sims)
+attend_section = rep(0, sims)
+
+#run the loop
+for(i in 1:sims){
+  # Randomly generate a whole number between 1 to 10
+  bedtime = sample(1:10,1)
+  # Randomly generate a probability that you attend section
+  attend= runif(1)
+  #Probability that you sleep before 11pm is 0.3.  3/10 = 0.3
+  if(bedtime <= 3){
+    #mark that you slept before 11pm.
+    bedtime_before_11[i] = 1
+    #You attend section with probability 0.8 in this case
+    if(attend <= .8){
+      attend_section[i] = 1
+    }    
+  }
+  #the case where you did not sleep before 11pm.
+  if(bedtime > 3){
+    #You attend class with probability 0.4 in this case
+    if(attend <= .4){
+      attend_section[i] = 1
+    }
+  }
+}
+mean(bedtime_before_11); mean(attend_section)
+```
+Our simulation should give us probabilities roughly equal to 0.3 and 0.52 for the event where you go to bed before 11 and the event where you attend section respectively.  
+
+# Bayes' Rule
+Frodo needs to return a piece of jewelry to the Mordor dollar store. His friend, Sam, has a car, and if Sam goes with Frodo, there is a 0.9 probability that Frodo gets the jewelry to the store. However, if Sam doesn’t go with Frodo, Frodo only has a .1 probability of making it to the store. There is a 0.8 probability that Sam goes with Frodo. Conditioned on the fact that Frodo successfully returned the jewelry to Mordor, what is the probability that Sam went with him?
+
+Hint:
+\[
+P(S|F) = \frac{P(F|S)P(S)}{P(F)}
+\]
+
+Now let's simulate:
+```{r}
+#inital parameters
+set.seed(110)
+sims = 1000
+
+#set paths for Sam coming/Frodo making it
+Sam = rep(0, sims)
+Frodo = rep(0, sims)
+
+#run the loop
+for(i in 1:sims){
+  
+  #flip for each Sam and Frodo
+  Sam.flip = runif(1)
+  Frodo.flip = runif(1)
+  
+  #the case where Sam comes
+  if(Sam.flip <= .8){
+    
+    #mark that Sam came
+    Sam[i] = 1
+    
+    #Frodo makes it with .9 probability
+    if(Frodo.flip <= .9){
+      Frodo[i] = 1
+    }
+  }
+  
+  #the case where Sam didn't come
+  if(Sam.flip > .8){
+    
+    #Frodo makes it with .1 probability
+    if(Frodo.flip <= .1){
+      Frodo[i] = 1
+    }
+  }
+}
+
+mean(Sam)
+```
+
+Do the values approximate what was calculated with Bayes' rule?  What do you think would happen if we increased the number of simulations?
+
+
