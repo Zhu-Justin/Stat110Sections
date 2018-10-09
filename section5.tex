@@ -4,7 +4,7 @@
 \title{Continuous Random Variables}
 \sectionnum{5}
 
-\author{\shira, \tim, \creds}
+\author{\justin, \michael, \creds}
 
 %\SOLUTION
 
@@ -59,17 +59,17 @@ Review: Expected value is \emph{linear}. This means that for \emph{any} random v
 \end{table}
 
 
-%\section*{Variance}
-%\begin{description}
-%\item[What is Variance?] Variance is the expected squared distance away from the mean. It is the square of the standard deviation.
-%\[\var(X) = E((X - EX)^2) = E(X^2) - E(X) \]
-%Oftentimes it's easier to calculate $E(X^2) - E(X)$ rather than $E(X - EX)$. You can find $E(X^2)$ with LotUS.
+\section*{Variance}
+\begin{description}
+\item[What is Variance?] Variance is the expected squared distance away from the mean. It is the square of the standard deviation.
+\[\var(X) = E((X - EX)^2) = E(X^2) - E(X) \]
+Oftentimes it's easier to calculate $E(X^2) - E(X)$ rather than $E(X - EX)$. You can find $E(X^2)$ with LotUS.
 
 %The following is true for constants $a, b$:
-%\[\var(aX + b) = a^2\var(X)\]
-%The following is true \textbf{only if X and Y are independent}:
-%\[\var(X + Y) = \var(X) + \var(Y)\]
-%\end{description}
+\[\var(aX + b) = a^2\var(X)\]
+The following is true \textbf{only if X and Y are independent}:
+\[\var(X + Y) = \var(X) + \var(Y)\]
+\end{description}
 
 
 \section*{Universality of Uniform} When you plug any random variable into its own CDF, you get a Uniform[0,1] random variable. When you put a Uniform[0,1] into an inverse CDF, you get the corresponding random variable. For example, let's say that a random variable X has a CDF
@@ -232,24 +232,24 @@ This is definitely \textbf{not} a uniform distribution. This also shows that $U^
 \end{enumerate}
 \end{solution}
 
-% \begin{exercise}{Normal Squared}
-% Let $Z \sim N(0,1)$ with CDF $\Phi$. The PDF of $Z^2$ is the function given by: 
+ \begin{exercise}{Normal Squared}
+ Let $Z \sim N(0,1)$ with CDF $\Phi$. The PDF of $Z^2$ is the function given by: 
 
-% $$ g(w) = \frac{1}{\sqrt{2\pi w}} e^{-w/2}$$ with a support of $w \geq 0$. 
+ $$ g(w) = \frac{1}{\sqrt{2\pi w}} e^{-w/2}$$ with a support of $w \geq 0$. 
 
-% \begin{enumerate}[(a)]
-% \item Find expressions for $E(Z^4)$ as integrals in two different ways, one based on the PDF of $Z$ and the other based on the PDF of $Z^2$. 
+ \begin{enumerate}[(a)]
+ \item Find expressions for $E(Z^4)$ as integrals in two different ways, one based on the PDF of $Z$ and the other based on the PDF of $Z^2$. 
 
-% \item Find $E(Z^2 + Z + \Phi(Z))$. 
+ \item Find $E(Z^2 + Z + \Phi(Z))$. 
 
-% \item Find the CDF of $Z^2$ in terms of $\Phi$; do not find the PDF of $g$. 
-% \end{enumerate}
+ \item Find the CDF of $Z^2$ in terms of $\Phi$; do not find the PDF of $g$. 
+ \end{enumerate}
 
-% \end{exercise}
+ \end{exercise}
 
-% \begin{solution}{3} 
-% \includegraphics[scale=0.7]{normal_sol.png}
-% \end{solution}
+ \begin{solution}{3}
+ \includegraphics[scale=0.7]{normal_sol.png}
+ \end{solution}
 
 \begin{exercise}{Breaking Sticks}
 A stick of length 1 is broken at a uniformly random point yielding two pieces. Let $X$ and $Y$ be the lengths of the shorter and longer pieces, respectively, and let $R = \frac{X}{Y}$ be the ratio of the lengths $X$ and $Y$. 
@@ -315,13 +315,13 @@ The PDF of $x$ is the derivative, so: $$ f(x) = \pder[]{x} (1 - e^{-x^3}) = 3x^2
 
 
 
-% \begin{exercise}{Finishing Homework} 
-% Three students are working independently on their probability homework. All 3 start at 1 pm on a certain day, and each takes an Exponential time with mean 6 hours to complete the homework. What is the earliest time when all 3 students will have completed the homework, on average?  (That is, at this time all 3 students need to be done with the homework.)
-% \end{exercise}
+ \begin{exercise}{Finishing Homework} 
+ Three students are working independently on their probability homework. All 3 start at 1 pm on a certain day, and each takes an Exponential time with mean 6 hours to complete the homework. What is the earliest time when all 3 students will have completed the homework, on average?  (That is, at this time all 3 students need to be done with the homework.)
+ \end{exercise}
 
-% \begin{solution}{3} 
-% \includegraphics[width=16cm]{expo_hw_sol.png}
-% \end{solution} 
+\begin{solution}{3} 
+ \includegraphics[width=16cm]{expo_hw_sol.png}
+ \end{solution} 
 
 \begin{exercise}{Continuous RV manipulation}
 Let $X$ be a continuous r.v. with CDF $F$ and PDF $f$.
@@ -356,7 +356,6 @@ Let $X$ be a continuous r.v. with CDF $F$ and PDF $f$.
 
 % Now, we know that on average, $1/2$ out of the ${1000 \choose 2}$ combinations of two surveyed people, will be of the same person. Since there are lots ${1000 \choose 2}$ of possible ways for two surveys to survey the same person, but the probability of each pair of surveys surveying the same person is small ($1/10^6$) and seemingly independent, we can approximate the distribution of pairs of same-responders with a Pois(1/2) distribution. $X \sim \Pois(1/2)$ and we are interested in $P(X > 0)$ which would be $$ 1 - P(X = 0) = \boxed{1 - e^{-1/2}}$$
 % \end{solution}
-
 
 \begin{exercise}{Pareto Distribution} 
 The Pareto distribution with parameter $a > 0$ has PDF $f(x) =\frac {a}{x^{a+1}}$ for $x \geq 1$ (and 0 otherwise). This distribution is often used in statistical modeling. 

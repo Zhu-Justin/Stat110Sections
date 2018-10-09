@@ -12,7 +12,7 @@
 
 \author{\justin}
 
-\SOLUTION
+%\SOLUTION
 
 \begin{document}
 
@@ -245,33 +245,6 @@ If $n_1 + n_2 < 10$, then the answer is 0 because if we're not even flipping coi
 
 \end{solution}
 \end{comment}
-
-\begin{exercise}{Mixture of Binomials}
-There are two coins, one with probability $p_1$ of Heads and the other with probability $p_2$ of Heads. One of the coins is randomly chosen (with equal probabilities for the two coins). It is then flipped $n \geq 2$ times. Let X be the number of times it lands Heads.
-\begin{enumerate}
-\item 
-Find the PMF of $X$. 
-\item What is the distribution of $X$ if $p_1 = p_2$? 
-
-
-\item Give an intuitive explanation of why $X$ is not Binomial for $p_1 \neq p_2$ (its distribution is called a mixture of two Binomials). You can assume that $n$ is large for your explanation, so that the frequentist interpretation of probability can be applied.
-\end{enumerate}
-\end{exercise}
-
-\begin{solution}{3}
-\vspace{-5mm}
-\begin{enumerate}[label=(\alph*)]
-\item By LOTP, conditioning on which coin is chosen, we have
-$$P(X = k) = \frac{1}{2}\binom{n}{k}p_1^k(1 - p_1)^{n - k} + \frac{1}{2}\binom{n}{k}p_2^k(1 - p_2)^{n - k}$$
-for $k = 0, 1, \ldots, n$.
-
-\item For $p_1 = p_2$, the above expression reduces to the $\Bin(n, p_1)$ PMF.
-
-\item A mixture of two Binomials is not Binomial (except in the degenerate case $p_1 = p_2$). Marginally, each toss has probability $\frac{p_1 + p_2}{2}$ of landing Heads, but the tosses are not independent since earlier tosses give information about which coin was chosen, which in turn gives information about later tosses. \\
-Let $n$ be large, and imagine repeating the entire experiment many times (each repetition consists of choosing a random coin and flipping it n times). We would expect to see either approximately $n p_1$ Heads about half the time, and approximately $n p_2$ Heads about half the time. In contrast, with a $\Bin(n, p)$ distribution we would expect to see approximately $n p$ Heads; no fixed choice of $p$ can create the behavior described above.
-\end{enumerate}
-
-\end{solution}
 
 
 \begin{exercise}{Symmetry} For the following 2 exercises, think about how symmetry may be used to avoid unnecessary calculations. 

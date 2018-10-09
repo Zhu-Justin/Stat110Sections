@@ -1,0 +1,12 @@
+---
+title: "R4"
+author: "Justin Zhu"
+date: "10/3/2018"
+output: pdf_document
+---
+
+# Section 1
+
+## Bernoulli
+
+# Good Packages

@@ -8,17 +8,116 @@ output: pdf_document
 urlcolor: blue
 ---
 
+# Good packages
+```{r}
+#install.packages('Rlab') 
+library(Rlab)
+```
+
 # Bernoulli
 
 ```{r}
+# Parameters (n, p for binomial and geometric)
+set.seed(110)
+n = 10
+p.bern = 5/10
+Y = rbern(n, p.bern)
+Y
+
+# Finding mean and variance
+mean(Y)
+var(Y)
+
+# Graphics
+# Overall histogram
+hist(Y, main = "Y ~ Bern(n, p)", ylab = "Density", xlab = "Values", 
+     col = rgb(0, 0, 0.5))
+```
+
+# Binomial
+
+```{r}
+# Parameters (n, p for binomial and geometric)
+set.seed(110)
+sims = 1000
+n = 10
+p.binom = 5/10
+Y_binom = rbinom(sims, n, p.binom)
+
+# Finding mean and variance
+mean(Y_binom)
+var(Y_binom)
+
+# Graphics
+# Overall histogram
+#hist(Y_binom, main = "Y ~ Bern(n, p)", ylab = "Density", xlab = "Values", 
+     #col = rgb(0.5, 0, 1, 1))
+```
+# What is the probability of getting at most 2?
+
+```{r}
+#Sum up the probability mass function!
+dbinom(0, n, p.binom) + dbinom(1, n, p.binom) + dbinom(2, n, p.binom)
+
+# Or alternatively, use the cumulative function:
+pbinom(2, n, p.binom)
+```
+
+#Bridging the distributions
+
+```{r}
+set.seed(110)
+sims = 1000
+n = 10
+p.binom = 5/10
+Y_sum = rep(0, sims)
+for (i in 1:sims){
+  Y = rbern(n, p.bern)
+  Y_sum[i] = sum(Y)
+}
+
+#hist(Y_sum, main = "Y_sum ~ n * Bern(p)", ylab = "Density", xlab = "Values", 
+     #col = rgb(0.5, 0, 1, 1))
+
+# We can compare the mean and variance between these two distributions
+mean(Y_sum)
+mean(Y_binom)
+var(Y_sum)
+var(Y_binom)
 ```
 
 # Geometric
-
 ```{r}
+set.seed(110)
+# Same old, Same old: Parameters first!
+n = 10
+p.geom = 5/10
+
+# Find the distribution
+Y_geom = rgeom(n, p.geom)
+
+# We can now plot
+hist(Y_geom, main = "Y ~ Geom(n, p)", ylab = "Density", xlab = "Values", 
+     col = rgb(0.5, 0, 1, 1))
 ```
 
-# First Success
+# Finding probabilities
+```{r}
+seven_heads = dgeom(7, p.geom)
+seven_heads
+```
+
+# Hypergeometric
+
+Think of a jar with  b  blue balls and  w  white balls. If you are drawing  n  balls total and are hoping to pick the white balls and not pick the blue balls and you then  $X$  be the number of white balls that you pick, then  $X$  has a Hypergeometric distribution.  HGeom(w,b,n).
 
 ```{r}
+# white balls
+m = w = 8
+n = b = 5
+k = 3
+x = 2
+
+dhyper(x, m, n, k)
 ```
+
