@@ -1,7 +1,0 @@
-\documentclass{article}
-
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-Hi
-
-\end{document}
