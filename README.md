@@ -1,7 +1,7 @@
 # STAT110 by Justin Zhu
 ```Statistics 110: Introduction to Probability, Fall 2018```
 
-Sections and Teaching Materials by Justin Zhu
+```Sections and Teaching Materials by Justin Zhu```
 
 # Files
 - Normal Section Notes in LaTeX
