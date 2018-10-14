@@ -1,4 +1,3 @@
-# STAT110 by Justin Zhu
 ```Statistics 110: Introduction to Probability, Fall 2018```
 
 ```Sections and Teaching Materials by Justin Zhu```
