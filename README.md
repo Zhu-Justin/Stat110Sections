@@ -1,5 +1,5 @@
 # STAT110 by Justin Zhu
-Section and Teaching Materials for Professor Joe Blitzstein's Statistics 110: Introduction to Probability Course, Fall 2018
+Statistics 110: Introduction to Probability, Fall 2018
 
 Justin Zhu
 
