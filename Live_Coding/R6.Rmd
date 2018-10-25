@@ -1,0 +1,84 @@
+---
+title: "Stat 110: R Section "
+author: Justin Zhu
+subtitle: "Credit to Joe Blitzstein,  Kenneth Baclawski, & Matt DosSantos DiSorbo"
+fontsize: 12pt
+geometry: margin=1in
+output: pdf_document
+urlcolor: blue
+---
+
+# Universality of the Uniform
+
+```{r}
+#set grid
+par(mfrow = c(1,2))
+
+#Exponential
+hist(rexp(1000), col = rgb(1, 0, 0, 1/2),
+     main = "Exponential Distribution",
+     xlab = "")
+
+#transformed Uniform
+hist(-log(1 - runif(1000)), col = rgb(0, 1, 0, 1/2),
+     main = "-ln(1 - U)", xlab = "")
+
+#generate the r.v., an Expo(1)
+X = rexp(1000, 1)
+
+#plot F(X)
+hist(pexp(X, 1), col = rgb(0, 0, 1, 1/2),
+     main = "F(X)", xlab = "")
+```
+
+# Normal
+
+```{r}
+#68-95-99.7 Rule
+pnorm(1) - pnorm(-1); pnorm(2) - pnorm(-2); pnorm(3) - pnorm(-3)
+
+#plot the CDF
+plot(seq(from = -3, to = 3, length.out = 20), pnorm(seq(from = -3, to = 3, length.out = 20)),
+     xlab = "x", ylab = "P(X <= x)", main = "CDF of X where X ~ N(0, 1)",
+     type = "p", pch = 16)
+```
+
+# Memoryless of the Exponential
+```{r}
+#replicate
+set.seed(110)
+sims = 1000
+
+#define simple parameters (n, p for binomial and geometric) and value of k
+n = 10
+lambda = 1/10
+mu = 3
+sigma = 1
+k = 5
+
+#generate the r.v.s
+X = rexp(sims, lambda)
+Y = rnorm(sims, mu, sigma)
+
+#graphics
+#set graphic grid
+par(mfrow = c(2,2))
+
+#overall histogram
+hist(X, main = "X ~ Expo(lambda)", xlab = "", freq = FALSE,
+     col = rgb(1, 0, 0, 1/4))
+
+#condition
+hist(X[X > k] - k, main = "(X - k)|X > k", freq = FALSE,
+     xlab = "", col = rgb(1, 0, 0, 1/4))
+
+
+#overall histogram
+hist(Y, main = "Y ~ N(mu, sigma^2)", xlab = "", freq = FALSE,
+     col = rgb(0, 1, 0, 1/4))
+
+#condition
+hist(Y[Y > k] - k, main = "(Y- k)|Y > k", freq = FALSE,
+     xlab = "", col = rgb(0, 1, 0, 1/4))
+```
+
